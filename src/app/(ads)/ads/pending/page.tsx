@@ -1,46 +1,74 @@
 "use client";
 import React, { useState } from "react";
 import {
-  AlertTriangle,
   ChevronLeft,
   ChevronRight as ChevronRightIcon,
   Clock,
   Eye,
-  RefreshCw,
   ShoppingBag,
-  Tag,
   Users,
   CheckCircle,
   X,
   Filter,
+  ChevronsRight,
+  ChevronsLeft,
 } from "lucide-react";
 import Image from "next/image";
-import { INITIAL_ADS } from "../active/page";
+import usePendingAds from "@/src/hooks/ads/usePendingAds";
+import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
+import { DateRangePicker, RangeValue } from "@heroui/react";
+import {
+  parseDate,
+  getLocalTimeZone,
+  DateValue,
+} from "@internationalized/date";
 const PendingAds = () => {
-  const [ads] = useState(INITIAL_ADS);
-  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
-  const [activeView, setActiveView] = useState("pending");
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
-  // **Filter only active ads**
-  const activeAds = ads.filter((ad) => ad.status === "active");
-
+  const {
+    data: pendingAds,
+    isLoading: isPendingAdsLoading,
+    isFetching: isPendingAdsFetching,
+    isError: isPendingAdsError,
+  } = usePendingAds({
+    limit: itemsPerPage,
+    page: currentPage,
+  });
+  const [activeView, setActiveView] = useState("pending");
+  const [value, setValue] = useState<RangeValue<DateValue> | null>({
+    start: parseDate("2024-04-01"),
+    end: parseDate("2024-04-08"),
+  });
   // Pagination Logic
-  const totalPages = Math.ceil(activeAds.length / itemsPerPage);
-  const paginatedAds = activeAds.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  const handleItemsPerPageChange = (e) => {
+  const count = pendingAds?.count ?? 0;
+  const start = (currentPage - 1) * itemsPerPage + 1;
+  const end = Math.min(currentPage * itemsPerPage, count);
+  const totalPages = Math.ceil(count / itemsPerPage);
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to page 1 to avoid out of bounds
+    setCurrentPage(1);
   };
+
+  // Smart Pagination Window
+  const visiblePages = 5;
+  let startPage = Math.max(currentPage - Math.floor(visiblePages / 2), 1);
+  let endPage = startPage + visiblePages - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(endPage - visiblePages + 1, 1);
+  }
+
+  const loading = isPendingAdsFetching || isPendingAdsLoading;
+
   return (
-    <div className=" h-full space-y-8">
+    <div className="h-full space-y-4 md:space-y-8 flex flex-col">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 capitalize">
             {activeView === "overview"
@@ -52,17 +80,38 @@ const PendingAds = () => {
           </p>
         </div>
         {activeView !== "overview" && (
-          <div className="flex items-center space-x-3">
-            <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+          <div className="flex items-center space-x-3 self-start md:self-auto">
+            {/* <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors active:scale-95">
               <Filter size={16} />
               <span>Filter</span>
-            </button>
+            </button> */}
+            <DateRangePicker
+              label="Date range "
+              value={value}
+              variant="bordered"
+              onChange={setValue}
+            />
           </div>
         )}
       </div>
-      <div className="relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col min-h-[500px]">
-        {paginatedAds.length === 0 ? (
-          <div className="text-center py-20">
+
+      {/* Main Content Area */}
+      <div className="relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
+        {loading && (
+          <div className="p-4 space-y-4">
+            {/* Render skeletons based on items per page */}
+            {Array.from({ length: Math.min(itemsPerPage, 3) }).map(
+              (_, index) => (
+                <AdCardSkeleton key={index} />
+              )
+            )}
+          </div>
+        )}
+
+        {/* Empty State */}
+        {((pendingAds && pendingAds.data.length === 0) || isPendingAdsError) &&
+        !loading ? (
+          <div className="text-center flex flex-col items-center justify-center h-full p-8">
             <div className="mx-auto h-12 w-12 text-slate-300 mb-3 flex items-center justify-center">
               <ShoppingBag size={48} strokeWidth={1} />
             </div>
@@ -72,159 +121,191 @@ const PendingAds = () => {
             <p className="text-slate-500 mt-1">Your queue is empty.</p>
           </div>
         ) : (
-          <>
-            {/* ADS LIST */}
-            <div className="divide-y divide-slate-100 flex-1">
-              {paginatedAds.map((ad) => (
-                <div
-                  key={ad.id}
-                  className="p-4 hover:bg-slate-50 transition-colors flex flex-col md:flex-row gap-4 items-start md:items-center"
-                >
-                  <div className="h-20 w-20 shrink-0 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
-                    <Image
-                      src={ad.image}
-                      alt={ad.title}
-                      height={1000}
-                      width={1000}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
+          !loading && (
+            <>
+              {/* ADS LIST - SCROLLABLE AREA */}
+              <div className="divide-y divide-slate-100 flex-1 overflow-y-auto custom-scrollbar">
+                {pendingAds &&
+                  pendingAds.data.map((ad) => (
+                    <div
+                      key={ad.id}
+                      className="group p-4 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+                    >
+                      {/* Responsive Image Container */}
+                      <div className="w-full sm:w-24 sm:h-24 md:w-32 md:h-24 shrink-0 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 relative aspect-video sm:aspect-square">
+                        <Image
+                          src={ad.ad_images[0].image_url}
+                          alt={ad.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="text-base font-semibold text-slate-800 truncate pr-4">
-                        {ad.title}
-                      </h3>
-                      <span className="font-bold text-indigo-600 block md:hidden">
-                        ${ad.price}
-                      </span>
-                    </div>
+                      {/* Content Info */}
+                      <div className="flex-1 min-w-0 w-full">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-base font-semibold text-slate-800 line-clamp-2 pr-2">
+                            {ad.title}
+                          </h3>
+                        </div>
 
-                    <p className="text-sm text-slate-500 line-clamp-1 mb-2">
-                      {ad.description}
-                    </p>
+                        <p className="text-sm text-slate-500 line-clamp-2 sm:line-clamp-1 mb-3">
+                          {ad.description}
+                        </p>
 
-                    <div className="flex items-center text-xs text-slate-400 space-x-4">
-                      <span className="flex items-center">
-                        <Users size={12} className="mr-1" /> {ad.seller}
-                      </span>
-                      <span className="flex items-center">
-                        <Clock size={12} className="mr-1" /> {ad.date}
-                      </span>
-                    </div>
-                  </div>
+                        <div className="flex flex-wrap items-center text-xs text-slate-400 gap-y-2 gap-x-4">
+                          <span className="font-bold text-green-600 shrink-0 bg-green-50 px-2 py-1 rounded text-sm">
+                            ₹{ad.price}
+                          </span>
+                          <span className="flex items-center bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                            <Users size={12} className="mr-1.5" />
+                            <span className="truncate max-w-[120px]">
+                              {ad.user_id.full_name}
+                            </span>
+                          </span>
+                          <span className="flex items-center bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                            <Clock size={12} className="mr-1.5" />
+                            {new Date(ad.created_at).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                        </div>
+                      </div>
 
-                  {/* ACTIONS */}
-                  <div className="flex items-center gap-2 mt-2 md:mt-0 md:ml-4 border-t md:border-t-0 pt-3 md:pt-0 w-full md:w-auto justify-end">
-                    <div className="relative flex items-center gap-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className="flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
-                      >
-                        <Eye size={16} className="mr-1.5" /> View Details
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className="flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
-                      >
-                        <X size={16} className="mr-1.5" /> Reject
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className="flex items-center px-3 py-1.5 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
-                      >
-                        <CheckCircle size={16} className="mr-1.5" /> Approve
-                      </button>
-
-                      {openDropdownId === ad.id && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-slate-100 z-10 py-1 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
-                          <button className="w-full text-left px-4 py-2 text-sm hover:bg-indigo-50 flex items-center">
-                            <Tag size={16} className="mr-2" /> Mark as Sold
+                      {/* ACTIONS */}
+                      <div className="w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                        {/* Grid for Mobile (3 buttons in 1 row), Flex for Desktop */}
+                        <div className="grid grid-cols-3 sm:flex sm:flex-col md:flex-row gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors active:scale-95 whitespace-nowrap"
+                          >
+                            <Eye size={16} className="mr-1.5 hidden md:block" />{" "}
+                            Details
                           </button>
-                          <button className="w-full text-left px-4 py-2 text-sm hover:bg-indigo-50 flex items-center">
-                            <AlertTriangle size={16} className="mr-2" /> Expired
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors active:scale-95"
+                          >
+                            <X size={16} className="mr-1.5 hidden md:block" />{" "}
+                            Reject
                           </button>
-                          <button className="w-full text-left px-4 py-2 text-sm hover:bg-indigo-50 flex items-center">
-                            <RefreshCw size={16} className="mr-2" /> Renew Ad
-                          </button>
-                          <div className="h-px bg-slate-100 my-1"></div>
-                          <button className="w-full text-left px-4 py-2 text-sm hover:bg-indigo-50 flex items-center">
-                            <Eye size={16} className="mr-2" /> View Ad
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors active:scale-95"
+                          >
+                            <CheckCircle
+                              size={16}
+                              className="mr-1.5 hidden md:block"
+                            />{" "}
+                            Approve
                           </button>
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="px-6 py-4 border-t bg-slate-50 flex flex-col sm:flex-row gap-4 justify-between">
-              <div className="flex items-center space-x-3 text-sm text-slate-500">
-                <span>Show</span>
-                <select
-                  value={itemsPerPage}
-                  onChange={handleItemsPerPageChange}
-                  className="border border-slate-300 rounded px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                </select>
-                <span>entries</span>
+                  ))}
               </div>
 
-              <span className="text-sm text-slate-500">
-                Showing <b>{(currentPage - 1) * itemsPerPage + 1}</b> to{" "}
-                <b>{Math.min(currentPage * itemsPerPage, activeAds.length)}</b>{" "}
-                of <b>{activeAds.length}</b> results
-              </span>
-
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="p-2 border rounded disabled:opacity-50"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-8 h-8 rounded ${
-                        currentPage === page
-                          ? "bg-indigo-600 text-white"
-                          : "bg-white border"
-                      }`}
+              {/* Responsive Pagination */}
+              <div className="px-4 py-3 md:px-6 md:py-4 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center gap-4 justify-between shrink-0">
+                {/* Mobile: Showing X-Y Text (Centered) */}
+                <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-slate-600 w-full sm:w-auto justify-center">
+                  <div className="flex items-center space-x-2">
+                    <span>Show</span>
+                    <select
+                      value={itemsPerPage}
+                      onChange={handleItemsPerPageChange}
+                      className="border border-slate-300 rounded px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs"
                     >
-                      {page}
-                    </button>
-                  )
-                )}
+                      <option value={2}>2</option>
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                    </select>
+                  </div>
+                  <span className="hidden sm:inline">|</span>
+                  <span>
+                    {start}-{end} of {count}
+                  </span>
+                </div>
 
-                <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(p + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="p-2 border rounded disabled:opacity-50"
-                >
-                  <ChevronRightIcon size={16} />
-                </button>
+                {/* Pagination Controls */}
+                <div className="flex space-x-1 sm:space-x-2 w-full sm:w-auto justify-center">
+                  <button
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                    className="p-2 border border-slate-200  text-slate-700 rounded bg-white hover:bg-slate-100 disabled:opacity-50 disabled:bg-slate-50 active:scale-95 transition-all"
+                  >
+                    <ChevronsLeft size={16} />
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="p-2 border border-slate-200  text-slate-700 rounded bg-white hover:bg-slate-100 disabled:opacity-50 disabled:bg-slate-50 active:scale-95 transition-all"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+
+                  {/* Hide page numbers on very small screens, show on tablet+ */}
+                  <div className="hidden sm:flex space-x-1">
+                    {Array.from(
+                      { length: endPage - startPage + 1 },
+                      (_, i) => startPage + i
+                    ).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-8 h-9 flex items-center justify-center text-sm rounded transition-colors ${
+                          currentPage === page
+                            ? "bg-indigo-600 text-white shadow-sm"
+                            : "bg-white border border-slate-200 hover:bg-slate-50 text-slate-700"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Mobile Only: Simple Page Indicator */}
+                  <span className="flex sm:hidden items-center px-2 text-sm font-medium text-slate-700">
+                    Page {currentPage}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(p + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    className="p-2 border border-slate-200  text-slate-700 rounded bg-white hover:bg-slate-100 disabled:opacity-50 disabled:bg-slate-50 active:scale-95 transition-all"
+                  >
+                    <ChevronRightIcon size={16} />
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    className="p-2 border border-slate-200  text-slate-700 rounded bg-white hover:bg-slate-100 disabled:opacity-50 disabled:bg-slate-50 active:scale-95 transition-all"
+                  >
+                    <ChevronsRight size={16} />
+                  </button>
+                </div>
               </div>
-            </div>
-          </>
+            </>
+          )
         )}
       </div>
     </div>
