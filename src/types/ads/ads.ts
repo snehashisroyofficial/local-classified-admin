@@ -67,30 +67,6 @@ export interface Location {
   created_at: string; // timestamptz (ISO string in JS)
 }
 
-// export interface AdvertisementType {
-//   id: string;
-//   user_id: User;
-//   category_id: Category;
-//   sub_category_id: SubCategory;
-//   title: string;
-//   description: string;
-//   price: number;
-//   condition: Condition;
-//   status: string;
-//   reject_reason: string | null;
-//   approved_by: User | null;
-//   approved_at: string | null; // ISO date string
-//   published_at: string | null; // ISO date string
-//   created_at: string; // ISO date string
-//   updated_at: string; // ISO date string
-//   sold: boolean | null;
-//   ad_images: AdImage[];
-//   location: Location[];
-//   distance?: number;
-//   contact_preferences?: ContactPreferences[];
-//   ad_tags?: AdTags[];
-// }
-
 export interface NearbyAd {
   ad_id: string;
   distance: number;

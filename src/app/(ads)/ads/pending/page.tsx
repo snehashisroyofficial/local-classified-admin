@@ -12,6 +12,7 @@ import {
   Filter,
   ChevronsRight,
   ChevronsLeft,
+  Check,
 } from "lucide-react";
 import Image from "next/image";
 import usePendingAds from "@/src/hooks/ads/usePendingAds";
@@ -22,7 +23,9 @@ import {
   getLocalTimeZone,
   DateValue,
 } from "@internationalized/date";
+import { useDateFormatter } from "@react-aria/i18n";
 const PendingAds = () => {
+  const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -34,12 +37,11 @@ const PendingAds = () => {
   } = usePendingAds({
     limit: itemsPerPage,
     page: currentPage,
+    startDate: value?.start.toDate(getLocalTimeZone()) || null,
+    endDate: value?.end.toDate(getLocalTimeZone()) || null,
   });
   const [activeView, setActiveView] = useState("pending");
-  const [value, setValue] = useState<RangeValue<DateValue> | null>({
-    start: parseDate("2024-04-01"),
-    end: parseDate("2024-04-08"),
-  });
+  const formatter = useDateFormatter({ calendar: "gregory" });
   // Pagination Logic
   const count = pendingAds?.count ?? 0;
   const start = (currentPage - 1) * itemsPerPage + 1;
@@ -64,7 +66,7 @@ const PendingAds = () => {
   }
 
   const loading = isPendingAdsFetching || isPendingAdsLoading;
-
+  console.log("date", value?.start.toDate(getLocalTimeZone()));
   return (
     <div className="h-full space-y-4 md:space-y-8 flex flex-col">
       {/* Header */}
@@ -86,10 +88,13 @@ const PendingAds = () => {
               <span>Filter</span>
             </button> */}
             <DateRangePicker
+              showMonthAndYearPickers
               label="Date range "
               value={value}
+              area-label="Date range picker"
               variant="bordered"
               onChange={setValue}
+              className="font-sans!"
             />
           </div>
         )}
@@ -137,6 +142,7 @@ const PendingAds = () => {
                           src={ad.ad_images[0].image_url}
                           alt={ad.title}
                           fill
+                          sizes=""
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
@@ -187,7 +193,7 @@ const PendingAds = () => {
                             onClick={(e) => {
                               e.stopPropagation();
                             }}
-                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors active:scale-95 whitespace-nowrap"
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-blue-100 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors active:scale-95 whitespace-nowrap"
                           >
                             <Eye size={16} className="mr-1.5 hidden md:block" />{" "}
                             Details
@@ -197,7 +203,7 @@ const PendingAds = () => {
                             onClick={(e) => {
                               e.stopPropagation();
                             }}
-                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors active:scale-95"
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-red-100 text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors active:scale-95"
                           >
                             <X size={16} className="mr-1.5 hidden md:block" />{" "}
                             Reject
@@ -207,9 +213,9 @@ const PendingAds = () => {
                             onClick={(e) => {
                               e.stopPropagation();
                             }}
-                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors active:scale-95"
+                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-green-100 text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors active:scale-95"
                           >
-                            <CheckCircle
+                            <Check
                               size={16}
                               className="mr-1.5 hidden md:block"
                             />{" "}

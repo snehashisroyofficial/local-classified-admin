@@ -12,7 +12,7 @@ export default function AppProviders({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <HeroUIProvider>
+      <HeroUIProvider locale="en-GB">
         <Toaster richColors />
 
         {children}
