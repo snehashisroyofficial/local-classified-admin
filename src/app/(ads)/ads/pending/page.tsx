@@ -1,186 +1,25 @@
 "use client";
+import React, { useState } from "react";
 import {
   AlertTriangle,
   ChevronLeft,
   ChevronRight as ChevronRightIcon,
   Clock,
   Eye,
-  MoreVertical,
   RefreshCw,
   ShoppingBag,
   Tag,
   Users,
   CheckCircle,
   X,
-  Trash2,
   Filter,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
-
-// --- Mock Data ---
-export const INITIAL_ADS = [
-  {
-    id: 1,
-    title: "Vintage Canon AE-1 Camera",
-    price: 250,
-    seller: "Alex Morgan",
-    sellerRating: 4.8,
-    date: "2 mins ago",
-    status: "active",
-    category: "Electronics",
-    description:
-      "In working condition. Lens included. Slight wear on the body but functional.",
-    image:
-      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 2,
-    title: "MacBook Pro M1 2020",
-    price: 850,
-    seller: "Sarah Jenkins",
-    sellerRating: 5.0,
-    date: "15 mins ago",
-    status: "active",
-    category: "Computers",
-    description:
-      "Battery health 98%. Comes with original charger and box. No scratches.",
-    image:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 3,
-    title: "Leather Chesterfield Sofa",
-    price: 1200,
-    seller: "Mike Ross",
-    sellerRating: 4.2,
-    date: "1 hour ago",
-    status: "active",
-    category: "Furniture",
-    description: "Genuine leather. Buyer must pick up. Heavy item.",
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 4,
-    title: "PlayStation 5 - Digital Edition",
-    price: 400,
-    seller: "GamerXYZ",
-    sellerRating: 3.5,
-    date: "2 hours ago",
-    status: "active",
-    category: "Gaming",
-    description: "Brand new sealed box. Unwanted gift.",
-    image:
-      "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 5,
-    title: "Mountain Bike - Trek Marlin",
-    price: 550,
-    seller: "John Doe",
-    sellerRating: 4.9,
-    date: "3 hours ago",
-    status: "active",
-    category: "Sports",
-    description: "Used for one season. Great condition. Includes helmet.",
-    image:
-      "https://images.unsplash.com/photo-1532298229144-0ec0c57e36fb?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 6,
-    title: "Broken Lawn Mower",
-    price: 50,
-    seller: "Tim Burton",
-    sellerRating: 2.1,
-    date: "1 day ago",
-    status: "rejected",
-    category: "Garden",
-    description: "Doesn't start. Good for parts.",
-    image:
-      "https://images.unsplash.com/photo-1589252084566-73699310d54b?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 7,
-    title: "iPhone 13",
-    price: 600,
-    seller: "Alice Smith",
-    sellerRating: 4.5,
-    date: "5 hours ago",
-    status: "active",
-    category: "Electronics",
-    description: "Like new.",
-    image:
-      "https://images.unsplash.com/photo-1592750475338-74b7b21918a4?auto=format&fit=crop&q=80&w=150",
-  },
-  {
-    id: 8,
-    title: "Nintendo Switch OLED",
-    price: 300,
-    seller: "Mario Fan",
-    sellerRating: 4.9,
-    date: "6 hours ago",
-    status: "active",
-    category: "Gaming",
-    description: "White joycons. Screen protector applied.",
-    image:
-      "https://images.unsplash.com/photo-1578303512597-81de50a55096?auto=format&fit=crop&q=80&w=150",
-  },
-  // Adding more mock data to demonstrate pagination better
-  {
-    id: 9,
-    title: "Coffee Table",
-    price: 150,
-    seller: "Furniture Co",
-    status: "active",
-    category: "Furniture",
-    image:
-      "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&q=80&w=150",
-    date: "7 hours ago",
-    description: "Oak finish.",
-  },
-  {
-    id: 10,
-    title: "Gaming Mouse",
-    price: 45,
-    seller: "Tech Shop",
-    status: "active",
-    category: "Electronics",
-    image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=150",
-    date: "8 hours ago",
-    description: "RGB lighting.",
-  },
-  {
-    id: 11,
-    title: "Office Chair",
-    price: 200,
-    seller: "Office Depot",
-    status: "active",
-    category: "Furniture",
-    image:
-      "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=150",
-    date: "9 hours ago",
-    description: "Ergonomic mesh.",
-  },
-  {
-    id: 12,
-    title: "Running Shoes",
-    price: 80,
-    seller: "Nike Reseller",
-    status: "rejected",
-    category: "Sports",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=150",
-    date: "10 hours ago",
-    description: "Fake branding detected.",
-  },
-];
-
-const ActivePage = () => {
+import { INITIAL_ADS } from "../active/page";
+const PendingAds = () => {
   const [ads] = useState(INITIAL_ADS);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
-  const [activeView, setActiveView] = useState("active");
+  const [activeView, setActiveView] = useState("pending");
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -194,9 +33,12 @@ const ActivePage = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to page 1 to avoid out of bounds
+  };
   return (
-    <div className=" space-y-8">
+    <div className=" h-full space-y-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -274,16 +116,30 @@ const ActivePage = () => {
 
                   {/* ACTIONS */}
                   <div className="flex items-center gap-2 mt-2 md:mt-0 md:ml-4 border-t md:border-t-0 pt-3 md:pt-0 w-full md:w-auto justify-end">
-                    <div className="relative">
+                    <div className="relative flex items-center gap-4">
                       <button
-                        onClick={() =>
-                          setOpenDropdownId(
-                            openDropdownId === ad.id ? null : ad.id
-                          )
-                        }
-                        className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        className="flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
                       >
-                        <MoreVertical size={20} />
+                        <Eye size={16} className="mr-1.5" /> View Details
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        className="flex items-center px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                      >
+                        <X size={16} className="mr-1.5" /> Reject
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        className="flex items-center px-3 py-1.5 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors"
+                      >
+                        <CheckCircle size={16} className="mr-1.5" /> Approve
                       </button>
 
                       {openDropdownId === ad.id && (
@@ -311,6 +167,21 @@ const ActivePage = () => {
 
             {/* Pagination */}
             <div className="px-6 py-4 border-t bg-slate-50 flex flex-col sm:flex-row gap-4 justify-between">
+              <div className="flex items-center space-x-3 text-sm text-slate-500">
+                <span>Show</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                  className="border border-slate-300 rounded px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                </select>
+                <span>entries</span>
+              </div>
+
               <span className="text-sm text-slate-500">
                 Showing <b>{(currentPage - 1) * itemsPerPage + 1}</b> to{" "}
                 <b>{Math.min(currentPage * itemsPerPage, activeAds.length)}</b>{" "}
@@ -360,4 +231,4 @@ const ActivePage = () => {
   );
 };
 
-export default ActivePage;
+export default PendingAds;

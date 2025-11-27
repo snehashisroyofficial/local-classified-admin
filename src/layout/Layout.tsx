@@ -10,7 +10,9 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="w-full">
         <Header setSidebarOpen={setSidebarOpen} />
-        <div className="p-6">{children}</div>
+        <div className="p-6 h-[calc(100vh-80px)] overflow-auto ">
+          {children}
+        </div>
       </div>
     </div>
   );
