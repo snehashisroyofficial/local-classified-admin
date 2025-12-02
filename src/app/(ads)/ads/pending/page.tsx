@@ -24,6 +24,11 @@ import {
   DateValue,
 } from "@internationalized/date";
 import { useDateFormatter } from "@react-aria/i18n";
+import { AdvertisementType } from "@/src/types/ads/ads";
+import { updateAdStatus } from "@/src/lib/actions/ads/pending";
+import { toast } from "sonner";
+import { useListingActions } from "@/src/hooks/ads/useListingActions";
+import ListingActionModal from "@/src/components/global/ListingActionModal";
 const PendingAds = () => {
   const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
   // Pagination
@@ -34,6 +39,7 @@ const PendingAds = () => {
     isLoading: isPendingAdsLoading,
     isFetching: isPendingAdsFetching,
     isError: isPendingAdsError,
+    refetch: refetchPendingAds,
   } = usePendingAds({
     limit: itemsPerPage,
     page: currentPage,
@@ -66,16 +72,43 @@ const PendingAds = () => {
   }
 
   const loading = isPendingAdsFetching || isPendingAdsLoading;
-  console.log("date", value?.start.toDate(getLocalTimeZone()));
+
+  // all actions
+  const {
+    handleChangeStatus,
+    handleChangeReject,
+    isLoading: isLoadingActions,
+    isSuccess,
+    resetState,
+    activeModal,
+    setActiveModal,
+  } = useListingActions(refetchPendingAds);
+
+  const onConfirmAction = (data: string) => {
+    if (!activeModal) return;
+
+    switch (activeModal.type) {
+      case "APPROVE":
+        handleChangeStatus(activeModal.data.id);
+        break;
+
+      case "REJECT":
+        handleChangeReject({ ...activeModal.data, reject_reason: data });
+        break;
+    }
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+    resetState();
+  };
   return (
     <div className="h-full space-y-4 md:space-y-8 flex flex-col">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 capitalize">
-            {activeView === "overview"
-              ? "Dashboard Overview"
-              : `${activeView} Listings`}
+            Pending Listings
           </h1>
           <p className="text-slate-500 text-sm mt-1">
             Manage your marketplace listings and moderation queue.
@@ -200,8 +233,11 @@ const PendingAds = () => {
                           </button>
 
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={() => {
+                              setActiveModal({
+                                type: "REJECT",
+                                data: ad,
+                              });
                             }}
                             className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-red-100 text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors active:scale-95"
                           >
@@ -210,8 +246,11 @@ const PendingAds = () => {
                           </button>
 
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={() => {
+                              setActiveModal({
+                                type: "APPROVE",
+                                data: ad,
+                              });
                             }}
                             className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-green-100 text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors active:scale-95"
                           >
@@ -314,6 +353,16 @@ const PendingAds = () => {
           )
         )}
       </div>
+      <ListingActionModal
+        isOpen={!!activeModal}
+        onClose={closeModal}
+        type={activeModal?.type || null}
+        data={activeModal?.data || null}
+        // Pass Hook State
+        onConfirm={onConfirmAction}
+        isLoading={isLoadingActions}
+        isSuccess={isSuccess}
+      />
     </div>
   );
 };
