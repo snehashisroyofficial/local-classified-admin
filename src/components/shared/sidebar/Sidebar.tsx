@@ -61,7 +61,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
           <span className="text-xl font-bold text-slate-800">MarketAdmin</span>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="space-y-1 overflow-y-auto">
           {SIDEBAR_ITEMS.map((item) => {
             const isActive = item.submenu?.some((sub) =>
               pathname.includes(sub.route)
