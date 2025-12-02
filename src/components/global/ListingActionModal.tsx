@@ -40,6 +40,7 @@ const ListingActionModal = ({
     data: rejectReasons,
     isLoading: isRejectReasonsLoading,
     isError: isRejectReasonsError,
+    error: rejectReasonsError,
   } = useRejectReasons(type);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const ListingActionModal = ({
 
   if (!type || !data) return null;
 
-  if ((type == "REJECT" && isRejectReasonsLoading) || isRejectReasonsError)
+  if (type == "REJECT" && (isRejectReasonsLoading || isRejectReasonsError))
     return (
       <Modal
         isOpen={isOpen}
@@ -64,13 +65,19 @@ const ListingActionModal = ({
         <ModalContent className="p-6 ">
           <ModalBody>
             <div className="flex justify-center items-center gap-2 h-full min-h-48">
-              {isRejectReasonsLoading ? (
+              {isRejectReasonsLoading && (
                 <>
                   <div className="h-4 w-4 rounded-full border-2 border-gray-200 border-t-gray-600 animate-spin "></div>
                   <span className="text-slate-500">Loading</span>
                 </>
-              ) : (
-                <span className="text-slate-500">{isRejectReasonsError}</span>
+              )}
+
+              {isRejectReasonsError && (
+                <>
+                  <span className="text-slate-500">
+                    {rejectReasonsError.message}
+                  </span>
+                </>
               )}
             </div>
           </ModalBody>
@@ -82,7 +89,7 @@ const ListingActionModal = ({
     REJECT: {
       icon: <TriangleAlert size={60} className="text-white" />,
       bg: "bg-red-600",
-      title: "Reject Listing",
+      title: "Reject Listing ?",
       desc: (title: string) =>
         `Are you sure you want to reject ${title} listing? Please note this action cannot be undone.`,
 
@@ -92,7 +99,7 @@ const ListingActionModal = ({
     APPROVE: {
       icon: <Check size={60} className="text-white" />,
       bg: "bg-green-500",
-      title: "Approved",
+      title: "Approve Listing ?",
 
       desc: (title: string) =>
         `Are you sure you want to approve ${title} listing? Please note this action cannot be undone.`,

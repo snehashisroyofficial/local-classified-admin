@@ -9,7 +9,8 @@ export async function fetchRejectReason(): Promise<CommonType[]> {
   const { data, error } = await supabase
     .from("common")
     .select("*")
-    .eq("type", "ads");
+    .eq("type", "ads")
+    .order("key", { ascending: true });
 
   if (error) throw new Error(error.message);
 
