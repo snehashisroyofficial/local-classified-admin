@@ -17,6 +17,8 @@
   --color-primary: #0064e0;
 }
 
+@layer components {
+}
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

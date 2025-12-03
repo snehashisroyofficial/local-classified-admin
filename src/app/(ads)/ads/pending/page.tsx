@@ -29,6 +29,7 @@ import { updateAdStatus } from "@/src/lib/actions/ads/pending";
 import { toast } from "sonner";
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
 import ListingActionModal from "@/src/components/global/ListingActionModal";
+import Link from "next/link";
 const PendingAds = () => {
   const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
   // Pagination
@@ -154,9 +155,15 @@ const PendingAds = () => {
               <ShoppingBag size={48} strokeWidth={1} />
             </div>
             <h3 className="text-lg font-medium text-slate-900">
-              No Active Ads
+              No Pending Ads
             </h3>
-            <p className="text-slate-500 mt-1">Your queue is empty.</p>
+
+            <button
+              onClick={() => setValue(null)}
+              className=" mt-6 p-2 rounded-md border-1 border-slate-200  bg-slate-100 hover:bg-slate-200 text-sm"
+            >
+              Reset Filters
+            </button>
           </div>
         ) : (
           !loading && (
@@ -222,16 +229,20 @@ const PendingAds = () => {
                       <div className="w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                         {/* Grid for Mobile (3 buttons in 1 row), Flex for Desktop */}
                         <div className="grid grid-cols-3 sm:flex sm:flex-col md:flex-row gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                            className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-blue-100 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors active:scale-95 whitespace-nowrap"
-                          >
-                            <Eye size={16} className="mr-1.5 hidden md:block" />{" "}
-                            Details
-                          </button>
-
+                          <Link href={`/ads/view/${ad.id}`}>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              className="flex items-center justify-center px-3 py-2 text-xs md:text-sm font-medium border border-blue-100 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors active:scale-95 whitespace-nowrap"
+                            >
+                              <Eye
+                                size={16}
+                                className="mr-1.5 hidden md:block"
+                              />{" "}
+                              Details
+                            </button>
+                          </Link>
                           <button
                             onClick={() => {
                               setActiveModal({

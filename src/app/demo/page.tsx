@@ -303,41 +303,6 @@ const StatCard = ({ title, value, change, icon: Icon, color }) => (
   </div>
 );
 
-const StatusBadge = ({ status }) => {
-  const styles = {
-    active: "bg-green-100 text-green-700",
-    pending: "bg-amber-100 text-amber-700",
-    rejected: "bg-red-100 text-red-700",
-    sold: "bg-slate-100 text-slate-700",
-    expired: "bg-orange-100 text-orange-700",
-    completed: "bg-emerald-100 text-emerald-700",
-    failed: "bg-rose-100 text-rose-700",
-  };
-
-  const icons = {
-    active: CheckCircle,
-    pending: Clock,
-    rejected: XCircle,
-    sold: Tag,
-    expired: AlertTriangle,
-    completed: CheckCircle,
-    failed: XCircle,
-  };
-
-  const Icon = icons[status] || Clock;
-
-  return (
-    <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium capitalize ${
-        styles[status] || styles.pending
-      }`}
-    >
-      <Icon size={12} className="mr-1.5" />
-      {status}
-    </span>
-  );
-};
-
 export default function AdminDashboard() {
   const [ads, setAds] = useState(INITIAL_ADS);
   const [activeView, setActiveView] = useState("overview"); // active, pending, rejected, overview

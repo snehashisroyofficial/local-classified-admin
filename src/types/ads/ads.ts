@@ -31,7 +31,7 @@ interface Condition {
   description: string;
 }
 
-interface AdImage {
+export interface AdImage {
   id: string;
   image_url: string;
 }
