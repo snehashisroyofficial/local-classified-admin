@@ -2,7 +2,12 @@
 
 import { formatCurrency } from "@/src/components/ads/view/CurrencyFormat";
 import ImageGallery from "@/src/components/ads/view/ImageGallery";
-import MapView from "@/src/components/ads/view/MapView";
+
+const MapView = dynamic(() => import("@/src/components/ads/view/MapView"), {
+  ssr: false,
+  loading: () => <p>Loading Map...</p>,
+});
+
 import StatusBadge from "@/src/components/ads/view/StatusBadge";
 import ViewAdDetailsSkeleton from "@/src/components/ads/view/ViewAdDetailsSkeleton";
 import ListingActionModal from "@/src/components/global/ListingActionModal";
@@ -26,6 +31,7 @@ import {
   X,
   XCircle,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";

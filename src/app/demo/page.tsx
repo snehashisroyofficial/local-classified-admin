@@ -29,6 +29,7 @@ import {
   UserPlus,
   Activity,
 } from "lucide-react";
+import StatusBadge from "@/src/components/ads/view/StatusBadge";
 
 // --- Mock Data ---
 const INITIAL_ADS = [

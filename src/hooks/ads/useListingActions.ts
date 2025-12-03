@@ -40,7 +40,7 @@ export const useListingActions = (refreshData?: () => void) => {
   };
 
   const handleChangeStatus = (id: string) => {
-    performAction(() => updateAdStatus({ id, status: "approved" }), {
+    performAction(() => updateAdStatus({ id, status: "active" }), {
       title: "Approved",
       message:
         "Ad has been approved. You can now see it in the active ads section.",

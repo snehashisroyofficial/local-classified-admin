@@ -15,7 +15,7 @@ import {
   Check,
 } from "lucide-react";
 import Image from "next/image";
-import usePendingAds from "@/src/hooks/ads/usePendingAds";
+import usePendingAds from "@/src/hooks/ads/useAllAds";
 import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
 import { DateRangePicker, RangeValue } from "@heroui/react";
 import {
@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
 import ListingActionModal from "@/src/components/global/ListingActionModal";
 import Link from "next/link";
+import useAllAds from "@/src/hooks/ads/useAllAds";
 const PendingAds = () => {
   const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
   // Pagination
@@ -41,11 +42,12 @@ const PendingAds = () => {
     isFetching: isPendingAdsFetching,
     isError: isPendingAdsError,
     refetch: refetchPendingAds,
-  } = usePendingAds({
+  } = useAllAds({
     limit: itemsPerPage,
     page: currentPage,
     startDate: value?.start.toDate(getLocalTimeZone()) || null,
     endDate: value?.end.toDate(getLocalTimeZone()) || null,
+    status: "pending",
   });
   const [activeView, setActiveView] = useState("pending");
   const formatter = useDateFormatter({ calendar: "gregory" });

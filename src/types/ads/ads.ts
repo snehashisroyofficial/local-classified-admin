@@ -81,6 +81,7 @@ export interface AdvertisementType {
   price: number;
   condition: Condition;
   status: string;
+  expires_at: string | null; // ISO date string
   reject_reason: string | null;
   approved_by: User | null;
   approved_at: string | null; // ISO date string

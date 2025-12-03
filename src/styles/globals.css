@@ -35,3 +35,8 @@ body {
 button {
   @apply active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer;
 }
+
+.leaflet-container {
+  z-index: 0 !important; /* Forces the map to the bottom of the stack */
+  position: relative;
+}

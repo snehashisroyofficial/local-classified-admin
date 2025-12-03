@@ -6,12 +6,14 @@ type Props = {
   limit: number;
   startDate: Date | null;
   endDate: Date | null;
+  status: string;
 };
-export async function fetchPendingAds({
+export async function fetchAllAds({
   limit,
   page,
   endDate,
   startDate,
+  status,
 }: Props): Promise<{ data: AdvertisementType[]; count: number }> {
   const start = (page - 1) * limit;
   const end = start + limit - 1;
@@ -26,11 +28,13 @@ export async function fetchPendingAds({
         *,
         user_id(*),
         location(*),
+        category_id(*),
+        sub_category_id(*),
         ad_images(id, image_url)
       `,
         { count: "exact" }
       )
-      .eq("status", "pending")
+      .eq("status", status)
       .order("created_at", { ascending: false })
       .range(start, end);
 
@@ -52,14 +56,13 @@ export async function fetchPendingAds({
   };
 }
 
-const usePendingAds = ({ limit, page, endDate, startDate }: Props) => {
-  console.log({ startDate }, { endDate });
+const useAllAds = ({ limit, page, endDate, startDate, status }: Props) => {
   return useQuery({
-    queryKey: ["pending-ads", limit, page, endDate, startDate],
+    queryKey: ["dynamic-ads", limit, page, endDate, startDate, status],
     queryFn: async () =>
-      await fetchPendingAds({ limit, page, endDate, startDate }),
+      await fetchAllAds({ limit, page, endDate, startDate, status }),
     refetchOnWindowFocus: false,
   });
 };
 
-export default usePendingAds;
+export default useAllAds;
