@@ -7,6 +7,9 @@ type Props = {
   startDate: Date | null;
   endDate: Date | null;
   status: string;
+  minPrice?: number;
+  maxPrice?: number;
+  email?: string;
 };
 export async function fetchAllAds({
   limit,
@@ -14,6 +17,9 @@ export async function fetchAllAds({
   endDate,
   startDate,
   status,
+  email,
+  maxPrice,
+  minPrice,
 }: Props): Promise<{ data: AdvertisementType[]; count: number }> {
   const start = (page - 1) * limit;
   const end = start + limit - 1;
@@ -21,12 +27,14 @@ export async function fetchAllAds({
   const supabase = createClient();
 
   const queryBuilder = () => {
+    const userRelation = email ? "user_id!inner(*)" : "user_id(*)";
+
     let query = supabase
       .from("ads")
       .select(
         `
         *,
-        user_id(*),
+        ${userRelation},
         location(*),
         category_id(*),
         sub_category_id(*),
@@ -35,14 +43,27 @@ export async function fetchAllAds({
         { count: "exact" }
       )
       .eq("status", status)
-      .order("created_at", { ascending: false })
-      .range(start, end);
+
+      .order("created_at", { ascending: false });
 
     if (startDate && endDate) {
       query = query
         .gte("created_at", new Date(startDate).toISOString())
         .lte("created_at", new Date(endDate).toISOString());
     }
+    if (minPrice) {
+      query = query.gte("price", minPrice);
+    }
+    if (maxPrice) {
+      query = query.lte("price", maxPrice);
+    }
+
+    if (email) {
+      query = query.eq("user_id.email", email);
+    }
+
+    query = query.range(start, end);
+
     return query;
   };
 
@@ -56,11 +77,39 @@ export async function fetchAllAds({
   };
 }
 
-const useAllAds = ({ limit, page, endDate, startDate, status }: Props) => {
+const useAllAds = ({
+  limit,
+  page,
+  endDate,
+  startDate,
+  status,
+  email,
+  maxPrice,
+  minPrice,
+}: Props) => {
   return useQuery({
-    queryKey: ["dynamic-ads", limit, page, endDate, startDate, status],
+    queryKey: [
+      "dynamic-ads",
+      limit,
+      page,
+      endDate,
+      startDate,
+      status,
+      email,
+      maxPrice,
+      minPrice,
+    ],
     queryFn: async () =>
-      await fetchAllAds({ limit, page, endDate, startDate, status }),
+      await fetchAllAds({
+        limit,
+        page,
+        endDate,
+        startDate,
+        status,
+        email,
+        maxPrice,
+        minPrice,
+      }),
     refetchOnWindowFocus: false,
   });
 };

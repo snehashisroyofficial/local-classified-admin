@@ -21,7 +21,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
 
   const handleViewChange = (view: string) => {
     setActiveView(view);
-    router.push(`/ads/${view}`);
+    router.push(`${view}`);
   };
 
   const toggleMenu = (label: string) => {
