@@ -28,7 +28,7 @@ import { AdvertisementType } from "@/src/types/ads/ads";
 import { updateAdStatus } from "@/src/lib/actions/ads/pending";
 import { toast } from "sonner";
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
-import ListingActionModal from "@/src/components/global/ListingActionModal";
+import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import Link from "next/link";
 import useAllAds from "@/src/hooks/ads/useAllAds";
 const PendingAds = () => {

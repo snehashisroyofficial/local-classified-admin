@@ -10,4 +10,5 @@ export interface User {
   phone?: number | null; // numeric, nullable
   is_phone_whatsapp: boolean; // boolean, default false
   last_updated: string; // timestamp with time zone, ISO string
+  account_status: "active" | "pending" | "suspend" | "blocked"; // public.account_status enum
 }

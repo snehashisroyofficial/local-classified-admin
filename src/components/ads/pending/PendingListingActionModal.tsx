@@ -26,7 +26,7 @@ interface Props {
   isSuccess: boolean;
 }
 
-const ListingActionModal = ({
+const PendingListingActionModal = ({
   isOpen,
   onClose,
   type,
@@ -178,4 +178,4 @@ const ListingActionModal = ({
   );
 };
 
-export default ListingActionModal;
+export default PendingListingActionModal;

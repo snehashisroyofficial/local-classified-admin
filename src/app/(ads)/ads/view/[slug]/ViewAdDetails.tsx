@@ -10,7 +10,7 @@ const MapView = dynamic(() => import("@/src/components/ads/view/MapView"), {
 
 import StatusBadge from "@/src/components/ads/view/StatusBadge";
 import ViewAdDetailsSkeleton from "@/src/components/ads/view/ViewAdDetailsSkeleton";
-import ListingActionModal from "@/src/components/global/ListingActionModal";
+import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import useFetchSingleAd from "@/src/hooks/ads/useFetchSingleAd";
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
 import { AdImage, AdvertisementType } from "@/src/types/ads/ads";

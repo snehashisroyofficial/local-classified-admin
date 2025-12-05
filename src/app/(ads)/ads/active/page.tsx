@@ -21,7 +21,7 @@ import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
 import { RangeValue } from "@heroui/react";
 import { getLocalTimeZone, DateValue } from "@internationalized/date";
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
-import ListingActionModal from "@/src/components/global/ListingActionModal";
+import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import StatusBadge from "@/src/components/ads/view/StatusBadge";
 import { useActiveListingActions } from "@/src/hooks/ads/useActiveListingActions";
 import moment from "moment";
@@ -99,34 +99,6 @@ const ActiveAds = () => {
 
   const loading = isActiveAdsFetching || isActiveAdsLoading;
 
-  const {
-    handleChangeStatus,
-    handleChangeReject,
-    isLoading: isLoadingActions,
-    isSuccess,
-    resetState,
-    activeModal,
-    setActiveModal,
-  } = useListingActions(refetchActiveAds);
-
-  const onConfirmAction = (data: string) => {
-    if (!activeModal) return;
-
-    switch (activeModal.type) {
-      case "APPROVE":
-        handleChangeStatus(activeModal.data.id);
-        break;
-
-      case "REJECT":
-        handleChangeReject({ ...activeModal.data, reject_reason: data });
-        break;
-    }
-  };
-
-  const closeModal = () => {
-    setActiveModal(null);
-    resetState();
-  };
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const toggleDropdown = (id: string) => {
@@ -388,16 +360,6 @@ const ActiveAds = () => {
           )
         )}
       </div>
-      <ListingActionModal
-        isOpen={!!activeModal}
-        onClose={closeModal}
-        type={activeModal?.type || null}
-        data={activeModal?.data || null}
-        // Pass Hook State
-        onConfirm={onConfirmAction}
-        isLoading={isLoadingActions}
-        isSuccess={isSuccess}
-      />
     </div>
   );
 };
