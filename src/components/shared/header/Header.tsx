@@ -1,5 +1,4 @@
 import { Bell, Menu, Search } from "lucide-react";
-import React from "react";
 
 type Props = {
   setSidebarOpen: (open: boolean) => void;

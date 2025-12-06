@@ -19,9 +19,7 @@ import {
   ArrowLeft,
   BadgeCheck,
   Check,
-  CheckCircle,
   Clock,
-  Globe,
   Mail,
   MapPin,
   MessageCircle,
@@ -29,12 +27,10 @@ import {
   ShieldAlert,
   Tag,
   X,
-  XCircle,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const ViewAdDetails = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -42,7 +38,6 @@ const ViewAdDetails = ({ id }: { id: string }) => {
   const {
     data: singleAd,
     isLoading: isSingleAdLoading,
-    error: singleAdError,
     isError: isSingleAdError,
     refetch: refetchSingleAd,
   } = useFetchSingleAd({ id });

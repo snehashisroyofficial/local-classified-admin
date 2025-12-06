@@ -1,6 +1,5 @@
 "use client";
 import ContentInfoCard from "@/src/components/ads/view/ContentInfoCard";
-import StatusBadge from "@/src/components/ads/view/StatusBadge";
 import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
 import useUserAds, { statusType } from "@/src/hooks/user/useUserAds";
 import { Button } from "@heroui/react";
@@ -16,13 +15,13 @@ const AdsUser = ({ statusType }: { statusType: statusType }) => {
     fetchNextPage,
     isFetchingNextPage,
     isError,
-    error,
+    error: AdError,
   } = useUserAds({ type: statusType });
   console.log("data", data);
   const ads = data?.pages.flatMap((page) => page.data) ?? [];
 
   if (isError) {
-    return <div className="text-black w-full">{error}</div>;
+    return <div className="text-black w-full">{AdError.message}</div>;
   }
 
   return (

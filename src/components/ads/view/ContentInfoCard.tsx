@@ -1,5 +1,4 @@
 import { Clock, Users } from "lucide-react";
-import React from "react";
 import { getExpiryStatus } from "../../global/getExpiryStatus";
 import { AdvertisementType } from "@/src/types/ads/ads";
 

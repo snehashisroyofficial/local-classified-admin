@@ -1,7 +1,6 @@
 "use client";
 import ProfileSidebar from "@/src/components/users/profile/ProfileSidebar";
 import ProfileTabs from "@/src/components/users/profile/ProfileTabs";
-import React from "react";
 
 const UserView = () => {
   return (

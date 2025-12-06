@@ -1,5 +1,4 @@
 import { ShoppingBag } from "lucide-react";
-import React from "react";
 
 type Props = {
   setValue?: () => void;

@@ -4,11 +4,12 @@ import useUserInfo from "@/src/hooks/user/useUserInfo";
 import { BadgeCheck, Mail, Phone } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
-import React from "react";
+
 import { statusConfig } from "../tableUtils";
+import ProfileSidebarSkeleton from "./ProfileSidebarSkeleton";
 
 const ProfileSidebar = () => {
-  const { data: UserInfo } = useUserInfo();
+  const { data: UserInfo, isLoading } = useUserInfo();
   const status = UserInfo?.account_status;
 
   // Safety: Handle case where config might be undefined
@@ -18,6 +19,10 @@ const ProfileSidebar = () => {
     icon: null,
     label: "Unknown",
   };
+
+  if (isLoading) {
+    return <ProfileSidebarSkeleton />;
+  }
 
   return (
     <div className="col-span-12 lg:col-span-4 space-y-6 lg:sticky lg:top-0 h-fit">

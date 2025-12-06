@@ -1,15 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  ChevronLeft,
-  ChevronRight as ChevronRightIcon,
-  Clock,
   Eye,
-  ShoppingBag,
-  Users,
   Filter,
-  ChevronsRight,
-  ChevronsLeft,
   Tag,
   AlertTriangle,
   RefreshCw,
@@ -18,11 +11,7 @@ import {
 import Image from "next/image";
 import useActiveAds from "@/src/hooks/ads/useAllAds";
 import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
-import { RangeValue } from "@heroui/react";
-import { getLocalTimeZone, DateValue } from "@internationalized/date";
-import { useListingActions } from "@/src/hooks/ads/useListingActions";
-import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
-import StatusBadge from "@/src/components/ads/view/StatusBadge";
+
 import { useActiveListingActions } from "@/src/hooks/ads/useActiveListingActions";
 import moment from "moment";
 import { useClickOutside } from "@/src/hooks/useClickOutside";
@@ -42,7 +31,6 @@ type formValueProps = {
 
 const ActiveAds = () => {
   const router = useRouter();
-  const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   // 1. NEW: State to store the applied filters
   const [activeFilters, setActiveFilters] = useState<formValueProps | null>(
@@ -68,8 +56,6 @@ const ActiveAds = () => {
   } = useActiveAds({
     limit: itemsPerPage,
     page: currentPage,
-    startDate: value?.start.toDate(getLocalTimeZone()) || null,
-    endDate: value?.end.toDate(getLocalTimeZone()) || null,
     status: "active",
     email: activeFilters?.email,
     maxPrice: activeFilters?.maxPrice,
@@ -271,13 +257,11 @@ const ActiveAds = () => {
                         {/* Content Info */}
                         {ad?.user_id && (
                           <div className="flex-1 min-w-0 w-full">
-                            <ContentInfoCard ad={ad} />
+                            <ContentInfoCard ad={ad} showUserInfo />
                           </div>
                         )}
 
                         <span className="font-bold">₹{ad.price}</span>
-
-                        <StatusBadge status={ad.status} />
 
                         {/* ACTIONS */}
                         <div className="w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">

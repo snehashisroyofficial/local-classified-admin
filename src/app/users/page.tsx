@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 // Adjust this import path to where you saved the Pagination component
 import useUsers from "@/src/hooks/user/useUsers";
 import { User } from "@/src/types/ads/user";
@@ -18,22 +18,16 @@ import {
 import {
   BadgeCheck,
   Check,
-  ClipboardClock,
-  Ellipsis,
-  EllipsisVertical,
   Eye,
-  Info,
   MoreVertical,
   MoveDown,
   MoveUp,
   OctagonPause,
-  OctagonX,
   Search,
   Shield,
   Trash,
   TriangleAlert,
   User as UserIcon,
-  Users,
   X,
 } from "lucide-react";
 import Pagination from "@/src/components/shared/table/Pagination";
@@ -43,7 +37,6 @@ import ActionPopup from "@/src/components/ads/active-ads/ActionPopup";
 import ActionItem from "@/src/components/ads/active-ads/ActionItem";
 import { useClickOutside } from "@/src/hooks/useClickOutside";
 import { roleConfig, statusConfig } from "@/src/components/users/tableUtils";
-import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import { useUserListingActions } from "@/src/hooks/user/useUserListingActions";
 import UserListingActionModal from "@/src/components/users/UserListingActionModal";
 import { useRouter } from "next/navigation";
@@ -57,10 +50,6 @@ const CustomerListTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showModalIndex, setShowModalIndex] = useState<number | null>(null);
 
-  // Model config
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [showModal, setShowModal] = useState({ type: "", isActive: false });
-  const [isModalBackgroundOpen, setIsModalBackgroundOpen] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,7 +63,11 @@ const CustomerListTable = () => {
     isError,
     refetch,
     error: errorUsers,
-  } = useUsers({ limit: pageSize, page: pageIndex + 1 }); // API expects 1-based page
+  } = useUsers({
+    limit: pageSize,
+    page: pageIndex + 1,
+    searchQuery: debouncedSearch,
+  });
 
   const popupRef = useClickOutside<HTMLDivElement>({
     enabled: showModalIndex !== null,
@@ -383,10 +376,27 @@ const CustomerListTable = () => {
 
   return (
     <>
+      <div className="flex items-center mb-3">
+        {users && users?.count > 0 && (
+          <div className="relative hidden md:block">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              size={18}
+            />
+            <input
+              type="text"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search user by name or email"
+              className="pl-10 pr-4 py-2 w-64 bg-white shadow border-1 border-none rounded-lg text-sm focus:ring-2 outline-none focus:ring-indigo-500 focus:bg-white transition-all"
+            />
+          </div>
+        )}
+      </div>
       <div className="w-full relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="min-h-[80vh] w-full divide-y-2 overflow-auto scrollbar-show bg-input/50 ">
+        {" "}
+        <div className="min-h-[75vh] w-full divide-y-2 overflow-auto scrollbar-show bg-input/50 ">
           {isLoading ? (
-            <div className="text-sm font-light flex justify-center items-center gap-2 min-h-[80vh] h-full">
+            <div className="text-sm font-light flex justify-center items-center gap-2 min-h-[86vh] h-full">
               <span>loading</span>
               <div className="h-4 w-4 border-t-transparent border-2 rounded-full animate-spin"></div>
             </div>
@@ -403,7 +413,7 @@ const CustomerListTable = () => {
               )}
             </div>
           ) : (
-            <div className="w-full h-full max-h-[80vh] ">
+            <div className="w-full h-full max-h-[75vh] ">
               <table className="w-full text-center h-full scrollbar-show overflow-auto scrollbar-show">
                 <thead className="bg-slate-100  sticky top-0 ">
                   {table.getHeaderGroups().map((eachHeader) => (
@@ -460,7 +470,6 @@ const CustomerListTable = () => {
             </div>
           )}
         </div>
-
         {/* --- NEW PAGINATION COMPONENT --- */}
         {!isLoading && !isError && (users?.count ?? 0) > 0 && (
           <Pagination

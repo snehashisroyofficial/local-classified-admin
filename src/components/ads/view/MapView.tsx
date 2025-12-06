@@ -24,11 +24,11 @@ const DEFAULT_POSITION = [22.566105985925578, 88.38534784240551] as [
   number,
   number
 ];
-const DEFAULT_POPUP = "Default Location";
+// const DEFAULT_POPUP = "Default Location";
 
 const MapView = ({ lat, lon, city }: MapViewProps) => {
   const [position, setPosition] = useState<[number, number]>(DEFAULT_POSITION);
-  const [popupText, setPopupText] = useState<string>(DEFAULT_POPUP);
+  // const [popupText, setPopupText] = useState<string>(DEFAULT_POPUP);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,23 +45,23 @@ const MapView = ({ lat, lon, city }: MapViewProps) => {
 
           if (data && data.length > 0) {
             setPosition([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
-            setPopupText(data[0].display_name);
+            // setPopupText(data[0].display_name);
           } else {
             console.warn(`City "${city}" not found. Using default location.`);
             setPosition(DEFAULT_POSITION);
-            setPopupText(`City not found. Showing default: ${DEFAULT_POPUP}`);
+            // setPopupText(`City not found. Showing default: ${DEFAULT_POPUP}`);
           }
         } else if (lat && lon) {
           setPosition([lat, lon]);
-          setPopupText(`Location at ${lat}, ${lon}`);
+          // setPopupText(`Location at ${lat}, ${lon}`);
         } else {
           setPosition(DEFAULT_POSITION);
-          setPopupText(DEFAULT_POPUP);
+          // setPopupText(DEFAULT_POPUP);
         }
       } catch (error) {
         console.error("Error fetching coordinates:", error);
         setPosition(DEFAULT_POSITION);
-        setPopupText(`Error finding location. ${DEFAULT_POPUP}`);
+        // setPopupText(`Error finding location. ${DEFAULT_POPUP}`);
       } finally {
         setIsLoading(false);
       }

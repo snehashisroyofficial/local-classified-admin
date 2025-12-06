@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 type Props = {
   page: number;
   limit: number;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
   status: string;
   minPrice?: number;
   maxPrice?: number;

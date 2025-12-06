@@ -7,26 +7,16 @@ import {
   Eye,
   ShoppingBag,
   Users,
-  CheckCircle,
   X,
-  Filter,
   ChevronsRight,
   ChevronsLeft,
   Check,
 } from "lucide-react";
 import Image from "next/image";
-import usePendingAds from "@/src/hooks/ads/useAllAds";
 import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
 import { DateRangePicker, RangeValue } from "@heroui/react";
-import {
-  parseDate,
-  getLocalTimeZone,
-  DateValue,
-} from "@internationalized/date";
-import { useDateFormatter } from "@react-aria/i18n";
-import { AdvertisementType } from "@/src/types/ads/ads";
-import { updateAdStatus } from "@/src/lib/actions/ads/pending";
-import { toast } from "sonner";
+import { getLocalTimeZone, DateValue } from "@internationalized/date";
+
 import { useListingActions } from "@/src/hooks/ads/useListingActions";
 import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import Link from "next/link";
@@ -49,8 +39,7 @@ const PendingAds = () => {
     endDate: value?.end.toDate(getLocalTimeZone()) || null,
     status: "pending",
   });
-  const [activeView, setActiveView] = useState("pending");
-  const formatter = useDateFormatter({ calendar: "gregory" });
+
   // Pagination Logic
   const count = pendingAds?.count ?? 0;
   const start = (currentPage - 1) * itemsPerPage + 1;
@@ -117,23 +106,17 @@ const PendingAds = () => {
             Manage your marketplace listings and moderation queue.
           </p>
         </div>
-        {activeView !== "overview" && (
-          <div className="flex items-center space-x-3 self-start md:self-auto">
-            {/* <button className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors active:scale-95">
-              <Filter size={16} />
-              <span>Filter</span>
-            </button> */}
-            <DateRangePicker
-              showMonthAndYearPickers
-              label="Date range "
-              value={value}
-              area-label="Date range picker"
-              variant="bordered"
-              onChange={setValue}
-              className="font-sans!"
-            />
-          </div>
-        )}
+        <div className="flex items-center space-x-3 self-start md:self-auto">
+          <DateRangePicker
+            showMonthAndYearPickers
+            label="Date range "
+            value={value}
+            area-label="Date range picker"
+            variant="bordered"
+            onChange={setValue}
+            className="font-sans!"
+          />
+        </div>
       </div>
 
       {/* Main Content Area */}

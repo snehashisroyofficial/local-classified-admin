@@ -4,36 +4,50 @@ import { useQuery } from "@tanstack/react-query";
 type Props = {
   page: number;
   limit: number;
+  searchQuery?: string;
 };
+
 async function fetchUsers({
   limit,
   page,
+  searchQuery,
 }: Props): Promise<{ data: User[]; count: number }> {
   const supabase = createClient();
   const start = (page - 1) * limit;
   const end = start + limit - 1;
-  console.log({ start, end });
+
+  const queryBuilder = () => {
+    let query = supabase.from("users").select("*", { count: "exact" });
+
+    if (searchQuery) {
+      query = query.or(
+        `full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`
+      );
+    }
+
+    return query;
+  };
+
   const {
     data: allUsers,
-    error,
     count,
-  } = await supabase
-    .from("users")
-    .select("*", { count: "exact" })
+    error,
+  } = await queryBuilder()
+    .order("created_at", { ascending: false })
     .range(start, end);
 
   if (error) throw new Error(error.message);
-  console.log("hook users", allUsers);
+
   return {
     data: allUsers as User[],
     count: count as number,
   };
 }
 
-const useUsers = ({ limit, page }: Props) => {
+const useUsers = ({ limit, page, searchQuery }: Props) => {
   return useQuery({
-    queryKey: ["users", limit, page],
-    queryFn: async () => await fetchUsers({ limit, page }),
+    queryKey: ["users", limit, page, searchQuery],
+    queryFn: async () => await fetchUsers({ limit, page, searchQuery }),
 
     refetchOnWindowFocus: false,
   });
