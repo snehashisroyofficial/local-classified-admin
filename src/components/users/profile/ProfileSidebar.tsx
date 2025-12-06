@@ -34,7 +34,6 @@ const ProfileSidebar = () => {
               alt={UserInfo?.full_name || "User Avatar"}
               className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-gray-50 shadow-sm object-cover"
             />
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
           </div>
 
           <div className="overflow-hidden">

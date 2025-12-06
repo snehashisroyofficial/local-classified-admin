@@ -35,6 +35,11 @@ const AdsUser = ({ statusType }: { statusType: statusType }) => {
             ))}
           </div>
         )}
+        {!isLoading && ads.length === 0 && (
+          <div className="h-24 flex justify-center items-center text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+            No {statusType} Ads
+          </div>
+        )}
         {ads.map((ad) => (
           <div
             onClick={() => router.push(`/ads/view/${ad.id}`)}
