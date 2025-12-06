@@ -325,11 +325,11 @@ const ViewAdDetails = ({ id }: { id: string }) => {
             </div>
 
             <div className="mt-5 pt-5 border-t border-gray-100 flex gap-3">
-              <button className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition-colors shadow-sm">
+              <button
+                onClick={() => router.push(`/users/${singleAd?.user_id.id}`)}
+                className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition-colors shadow-sm"
+              >
                 View Profile
-              </button>
-              <button className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition-colors shadow-sm">
-                Ads History
               </button>
             </div>
           </div>

@@ -2,10 +2,8 @@ import {
   deleteUser,
   updateAccountStatus,
   updateRole,
-  updateStatus,
   updateVerified,
 } from "@/src/lib/actions/user";
-import { AdvertisementType } from "@/src/types/ads/ads";
 import { User } from "@/src/types/ads/user";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";

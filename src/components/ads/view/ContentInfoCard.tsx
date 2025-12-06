@@ -5,8 +5,9 @@ import { AdvertisementType } from "@/src/types/ads/ads";
 
 type Props = {
   ad: AdvertisementType;
+  showUserInfo?: boolean;
 };
-const ContentInfoCard = ({ ad }: Props) => {
+const ContentInfoCard = ({ ad, showUserInfo }: Props) => {
   console.log("content info card", ad);
   return (
     <div>
@@ -21,10 +22,14 @@ const ContentInfoCard = ({ ad }: Props) => {
       </p>
 
       <div className="flex flex-wrap items-center text-xs text-slate-400 gap-y-2 gap-x-4">
-        <span className="flex items-center bg-slate-50 px-2 py-1 rounded border border-slate-100">
-          <Users size={12} className="mr-1.5" />
-          <span className="truncate max-w-[120px]">{ad.user_id.full_name}</span>
-        </span>
+        {showUserInfo && (
+          <span className="flex items-center bg-slate-50 px-2 py-1 rounded border border-slate-100">
+            <Users size={12} className="mr-1.5" />
+            <span className="truncate max-w-[120px]">
+              {ad.user_id.full_name}
+            </span>
+          </span>
+        )}
         <span className="flex items-center bg-slate-50 px-2 py-1 rounded border border-slate-100">
           <Users size={12} className="mr-1.5" />
           <span className="truncate max-w-[120px]">{ad.category_id.name}</span>

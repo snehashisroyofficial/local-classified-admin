@@ -46,8 +46,11 @@ import { roleConfig, statusConfig } from "@/src/components/users/tableUtils";
 import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import { useUserListingActions } from "@/src/hooks/user/useUserListingActions";
 import UserListingActionModal from "@/src/components/users/UserListingActionModal";
+import { useRouter } from "next/navigation";
 
 const CustomerListTable = () => {
+  const router = useRouter();
+
   // --- State ---
   const [pageIndex, setPageIndex] = useState(0); // 0-based index for logic
   const [pageSize, setPageSize] = useState(15);
@@ -324,7 +327,11 @@ const CustomerListTable = () => {
               }}
             />
             <div className="h-px bg-slate-100 my-1 hidden sm:block" />
-            <ActionItem icon={Eye} label="View Details" onClick={() => {}} />
+            <ActionItem
+              icon={Eye}
+              label="View Details"
+              onClick={() => router.push(`/users/${info.row.original.id}`)}
+            />
           </ActionPopup>
         </div>
       ),
