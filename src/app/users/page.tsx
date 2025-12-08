@@ -365,7 +365,6 @@ const CustomerListTable = () => {
   const startRecord = totalItems === 0 ? 0 : pageIndex * pageSize + 1;
   const endRecord = Math.min((pageIndex + 1) * pageSize, totalItems);
 
-  // Logic to show a window of page numbers (e.g., 5 pages at a time)
   const maxVisiblePages = 5;
   let startPage = Math.max(1, pageIndex + 1 - Math.floor(maxVisiblePages / 2));
   const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -376,27 +375,24 @@ const CustomerListTable = () => {
 
   return (
     <>
-      <div className="flex items-center mb-3">
-        {users && users?.count > 0 && (
-          <div className="relative hidden md:block">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              size={18}
-            />
-            <input
-              type="text"
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search user by name or email"
-              className="pl-10 pr-4 py-2 w-64 bg-white shadow border-1 border-none rounded-lg text-sm focus:ring-2 outline-none focus:ring-indigo-500 focus:bg-white transition-all"
-            />
-          </div>
-        )}
+      <div className="relative hidden md:block mb-2">
+        <Search
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          size={18}
+        />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search user by name or email"
+          className="pl-10 pr-4 py-2 w-64 bg-white shadow border-1 border-none rounded-lg text-sm focus:ring-2 outline-none focus:ring-indigo-500 focus:bg-white transition-all"
+        />
       </div>
+
       <div className="w-full relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        {" "}
         <div className="min-h-[75vh] w-full divide-y-2 overflow-auto scrollbar-show bg-input/50 ">
           {isLoading ? (
-            <div className="text-sm font-light flex justify-center items-center gap-2 min-h-[86vh] h-full">
+            <div className="text-sm font-light flex justify-center items-center gap-2 min-h-[75vh] h-full">
               <span>loading</span>
               <div className="h-4 w-4 border-t-transparent border-2 rounded-full animate-spin"></div>
             </div>

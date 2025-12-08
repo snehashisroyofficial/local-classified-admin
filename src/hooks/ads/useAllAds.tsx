@@ -9,7 +9,7 @@ type Props = {
   status: string;
   minPrice?: number;
   maxPrice?: number;
-  email?: string;
+  userEmailOrName?: string;
 };
 export async function fetchAllAds({
   limit,
@@ -17,7 +17,7 @@ export async function fetchAllAds({
   endDate,
   startDate,
   status,
-  email,
+  userEmailOrName,
   maxPrice,
   minPrice,
 }: Props): Promise<{ data: AdvertisementType[]; count: number }> {
@@ -27,7 +27,7 @@ export async function fetchAllAds({
   const supabase = createClient();
 
   const queryBuilder = () => {
-    const userRelation = email ? "user_id!inner(*)" : "user_id(*)";
+    const userRelation = userEmailOrName ? "user_id!inner(*)" : "user_id(*)";
 
     let query = supabase
       .from("ads")
@@ -58,8 +58,11 @@ export async function fetchAllAds({
       query = query.lte("price", maxPrice);
     }
 
-    if (email) {
-      query = query.eq("user_id.email", email);
+    if (userEmailOrName) {
+      query = query.or(
+        `full_name.ilike.%${userEmailOrName}%,email.ilike.%${userEmailOrName}%`,
+        { foreignTable: "user_id" }
+      );
     }
 
     query = query.range(start, end);
@@ -83,7 +86,7 @@ const useAllAds = ({
   endDate,
   startDate,
   status,
-  email,
+  userEmailOrName,
   maxPrice,
   minPrice,
 }: Props) => {
@@ -95,7 +98,7 @@ const useAllAds = ({
       endDate,
       startDate,
       status,
-      email,
+      userEmailOrName,
       maxPrice,
       minPrice,
     ],
@@ -106,7 +109,7 @@ const useAllAds = ({
         endDate,
         startDate,
         status,
-        email,
+        userEmailOrName,
         maxPrice,
         minPrice,
       }),

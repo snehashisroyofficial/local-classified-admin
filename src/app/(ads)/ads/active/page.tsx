@@ -26,7 +26,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 type formValueProps = {
   minPrice: number;
   maxPrice: number;
-  email: string;
+  userNameOrEmail: string;
 };
 
 const ActiveAds = () => {
@@ -57,7 +57,7 @@ const ActiveAds = () => {
     limit: itemsPerPage,
     page: currentPage,
     status: "active",
-    email: activeFilters?.email,
+    userEmailOrName: activeFilters?.userNameOrEmail,
     maxPrice: activeFilters?.maxPrice,
     minPrice: activeFilters?.minPrice,
   });
@@ -170,12 +170,12 @@ const ActiveAds = () => {
                 {/* Email Field */}
                 <div className="space-y-2">
                   <label className="text-xs font-medium text-slate-700">
-                    Email
+                    User Name or Email
                   </label>
                   <input
-                    type="email"
-                    {...register("email")}
-                    placeholder="example@email.com"
+                    type="text"
+                    {...register("userNameOrEmail")}
+                    placeholder="John Doe or johndoe123@gmail.com"
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg
                  focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
                   outline-none text-sm"
