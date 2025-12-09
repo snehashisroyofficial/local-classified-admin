@@ -6,13 +6,12 @@ import Input from "@/src/components/global/ui/auth/Input";
 import { signInUser } from "@/src/lib/actions/auth";
 import { getUserInfo } from "@/src/lib/actions/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { LockKeyhole, Mail } from "lucide-react";
-import Image from "next/image";
+import { LockKeyhole, Mail, ShoppingBag } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react"; // 1. Import Suspense
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
+import backgroundIMage from "/src/assets/banner.webp";
 type FormValues = {
   email: string;
   password: string;
@@ -59,18 +58,25 @@ const SignInContent = () => {
   };
 
   return (
-    <div className="h-dvh w-full flex justify-center items-center background-image">
+    <div
+      className={`h-dvh w-full flex justify-center items-center bg-[url(${backgroundIMage})] bg-cover`}
+    >
       <div className="max-w-md w-full p-8 m-4 rounded-2xl shadow auth-form-container backdrop-blur-2xl">
-        <div className="text-center max-w-md w-full my-6">
-          <Image
+        <div className="flex flex-col items-center max-w-md w-full my-6">
+          {/* <Image
             src={"/images/logo1.png"}
             height={60}
             width={230}
             alt="logo"
             className="h-full object-contain mx-auto mb-8"
-          />
+          /> */}
+          <div className="h-16 flex items-center  border-b border-slate-100 shrink-0">
+            <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center mr-3">
+              <ShoppingBag className="text-white" size={20} />
+            </div>
+          </div>
           <h2 className="font-bold text-2xl">Welcome Back!</h2>
-          <span className="text-gray-500 text-sm">
+          <span className="text-gray-500 text-sm text-center">
             Manage users, ads, plans, subscriptions, and more — all from one
             secure dashboard.
           </span>
@@ -102,26 +108,11 @@ const SignInContent = () => {
               })}
             />
 
-            <p
-              onClick={() => router.push("/forget-password")}
-              className="text-xs text-right hover:underline"
-            >
-              Forgot Password ?
-            </p>
             <SubmitButton isLoading={loading}>
               {loading ? "Signing In..." : "Sign In"}
             </SubmitButton>
           </div>
         </form>
-        <div className="text-xs text-center w-full space-x-2 mt-4">
-          <span>Don&apos;t have an account?</span>
-          <button
-            onClick={() => router.push("/signup")}
-            className="font-semibold hover:text-button"
-          >
-            Create one
-          </button>
-        </div>
       </div>
     </div>
   );

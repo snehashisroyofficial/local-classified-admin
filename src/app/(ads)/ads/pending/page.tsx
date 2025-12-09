@@ -98,7 +98,7 @@ const PendingAds = () => {
     <div className="h-full space-y-4 md:space-y-8 flex flex-col">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
-        <div>
+        <div className="p-4">
           <h1 className="text-2xl font-bold text-slate-800 capitalize">
             Pending Listings
           </h1>
@@ -313,7 +313,7 @@ const PendingAds = () => {
                         onClick={() => setCurrentPage(page)}
                         className={`w-8 h-9 flex items-center justify-center text-sm rounded transition-colors ${
                           currentPage === page
-                            ? "bg-indigo-600 text-white shadow-sm"
+                            ? "bg-primary text-white shadow-sm"
                             : "bg-white border border-slate-200 hover:bg-slate-50 text-slate-700"
                         }`}
                       >

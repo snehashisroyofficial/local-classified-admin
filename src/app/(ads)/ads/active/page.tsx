@@ -118,7 +118,7 @@ const ActiveAds = () => {
     <div className="h-full space-y-4 md:space-y-8 flex flex-col">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
-        <div>
+        <div className="p-4">
           <h1 className="text-2xl font-bold text-slate-800 capitalize">
             Active Listings
           </h1>
@@ -196,7 +196,7 @@ const ActiveAds = () => {
 
                   <button
                     type="submit"
-                    className="w-1/2 py-2 rounded-lg bg-indigo-600 text-white 
+                    className="w-1/2 py-2 rounded-lg bg-primary text-white 
                  hover:bg-indigo-700 active:scale-[.98] transition text-xs"
                   >
                     Apply

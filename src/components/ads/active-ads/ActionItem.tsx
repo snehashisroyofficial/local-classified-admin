@@ -29,7 +29,7 @@ const ActionItem: React.FC<ActionItemProps> = ({
         ${
           danger
             ? "text-slate-700 hover:bg-red-50 hover:text-red-700"
-            : "text-slate-700 hover:bg-indigo-50 hover:text-indigo-600"
+            : "text-slate-700 hover:bg-indigo-50 hover:text-primary"
         }
       `}
     >

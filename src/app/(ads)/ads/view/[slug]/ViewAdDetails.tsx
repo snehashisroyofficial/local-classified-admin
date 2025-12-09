@@ -144,7 +144,7 @@ const ViewAdDetails = ({ id }: { id: string }) => {
               <hr className="my-6 border-gray-100" />
 
               {/* Description */}
-              <div className="prose prose-sm sm:prose-base prose-slate prose-p:text-gray-600 prose-headings:font-bold prose-a:text-indigo-600 max-w-none">
+              <div className="prose prose-sm sm:prose-base prose-slate prose-p:text-gray-600 prose-headings:font-bold prose-a:text-primary max-w-none">
                 <h3 className="text-base font-semibold text-gray-900 mb-2">
                   Description
                 </h3>
@@ -194,7 +194,7 @@ const ViewAdDetails = ({ id }: { id: string }) => {
           {/* Location Map Card */}
           <div className="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-indigo-600" />
+              <MapPin className="w-5 h-5 text-primary" />
               Location
             </h3>
             {/* Aspect ratio optimized for mobile map view */}
@@ -230,7 +230,7 @@ const ViewAdDetails = ({ id }: { id: string }) => {
           {singleAd?.status === "pending" && (
             <div className="fixed bottom-0 left-0 right-0 z-99999 bg-white border-t border-gray-200 shadow-sm p-4 lg:static lg:bg-white lg:border lg:rounded-2xl lg:shadow-sm mb-0 lg:p-5 lg:mb-6 lg:z-auto  ">
               <div className="hidden lg:flex items-center gap-2 mb-4 text-gray-900 font-semibold">
-                <ShieldAlert className="w-5 h-5 text-indigo-600" />
+                <ShieldAlert className="w-5 h-5 text-primary" />
                 <h3>Review Actions</h3>
               </div>
               <div className=" flex gap-4">
@@ -321,7 +321,7 @@ const ViewAdDetails = ({ id }: { id: string }) => {
             <div className="mt-5 pt-5 border-t border-gray-100 flex gap-3">
               <button
                 onClick={() => router.push(`/users/${singleAd?.user_id.id}`)}
-                className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-indigo-600 rounded-lg transition-colors shadow-sm"
+                className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:text-primary rounded-lg transition-colors shadow-sm"
               >
                 View Profile
               </button>
@@ -399,7 +399,7 @@ const ContactRow = ({
           className={`p-1.5 rounded-lg shadow-sm ${
             isWhatsapp
               ? "bg-white text-green-600"
-              : "bg-white text-gray-600 group-hover:text-indigo-600"
+              : "bg-white text-gray-600 group-hover:text-primary"
           }`}
         >
           {icon}

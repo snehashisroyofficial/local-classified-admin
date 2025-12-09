@@ -98,7 +98,7 @@ const ImageGallery = ({
             onClick={() => setActiveIdx(idx)}
             className={`shrink-0 w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden border-2 transition-all snap-start ${
               activeIdx === idx
-                ? "border-indigo-600 ring-2 ring-indigo-100 opacity-100"
+                ? "border-primary ring-2 ring-indigo-100 opacity-100"
                 : "border-transparent opacity-60 hover:opacity-100"
             }`}
           >

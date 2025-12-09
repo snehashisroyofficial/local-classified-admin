@@ -24,6 +24,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
 
   const handleViewChange = (view: string) => {
     setActiveView(view);
+    setSidebarOpen(false);
     router.push(`${view}`);
   };
 
@@ -67,8 +68,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
           }
         `}
       >
-        <div className="h-20 flex items-center px-8 border-b border-slate-100 shrink-0">
-          <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center mr-3">
+        <div className="h-16 flex items-center px-8 border-b border-slate-100 shrink-0">
+          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center mr-3">
             <ShoppingBag className="text-white" size={20} />
           </div>
           <span className="text-xl font-bold text-slate-800">MarketAdmin</span>
