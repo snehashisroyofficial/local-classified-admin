@@ -1,5 +1,6 @@
 "use client";
 
+import LoaderScreen from "@/src/components/global/app-loading/LoaderScreen";
 import { SubmitButton } from "@/src/components/global/ui/auth/Button";
 import Input from "@/src/components/global/ui/auth/Input";
 import { signInUser } from "@/src/lib/actions/auth";
@@ -128,13 +129,7 @@ const SignInContent = () => {
 
 const SignInPage = () => {
   return (
-    <Suspense
-      fallback={
-        <div className="h-dvh w-full flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={<LoaderScreen />}>
       <SignInContent />
     </Suspense>
   );

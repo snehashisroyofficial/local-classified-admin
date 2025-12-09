@@ -14,7 +14,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-primary: #0064e0;
+  --color-primary: #0a2ecc;
 }
 
 @layer components {

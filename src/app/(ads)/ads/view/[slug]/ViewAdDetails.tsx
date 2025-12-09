@@ -274,7 +274,6 @@ const ViewAdDetails = ({ id }: { id: string }) => {
                   alt={singleAd?.user_id.full_name || "User Avatar"}
                   className="w-14 h-14 rounded-full border-2 border-gray-50 shadow-sm object-cover"
                 />
-                <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
               </div>
               <div className="overflow-hidden">
                 <h3 className="font-bold text-gray-900 truncate text-lg">
