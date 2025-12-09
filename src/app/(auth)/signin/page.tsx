@@ -11,7 +11,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react"; // 1. Import Suspense
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import backgroundIMage from "/src/assets/banner.webp";
 type FormValues = {
   email: string;
   password: string;
@@ -59,10 +58,10 @@ const SignInContent = () => {
 
   return (
     <div
-      className={`h-dvh w-full flex justify-center items-center bg-[url(${backgroundIMage})] bg-cover`}
+      className={`h-dvh w-full flex justify-center items-center bg-hero-fade bg-cover bg-center `}
     >
-      <div className="max-w-md w-full p-8 m-4 rounded-2xl shadow auth-form-container backdrop-blur-2xl">
-        <div className="flex flex-col items-center max-w-md w-full my-6">
+      <div className="max-w-md w-full p-8 m-4 bg-white  rounded-2xl shadow auth-form-container backdrop-blur-sm!">
+        <div className="flex flex-col items-center max-w-md w-full my-6 ">
           {/* <Image
             src={"/images/logo1.png"}
             height={60}

@@ -19,7 +19,6 @@ export async function fetchUserAdsAction({
   data: AdvertisementType[];
   count: number;
 }> {
-  console.log("type", selectedStatus);
   const supabase = await createClient();
 
   const queryBuilder = () => {

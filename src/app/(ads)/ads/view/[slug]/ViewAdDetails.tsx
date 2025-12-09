@@ -75,7 +75,6 @@ const ViewAdDetails = ({ id }: { id: string }) => {
     setActiveModal(null);
     resetState();
   };
-  console.log({ singleAd });
   return (
     <div className="w-full h-full bg-gray-50/50 pb-10 ">
       {/* Header Section */}

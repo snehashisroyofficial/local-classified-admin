@@ -107,7 +107,6 @@ const PendingListingActionModal = ({
       btnText: "Confirm",
     },
   }[type];
-  console.log({ value });
   const isConfirmDisabled = type === "REJECT" && !value;
 
   return (

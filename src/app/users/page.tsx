@@ -43,12 +43,14 @@ import {
 import { useUserListingActions } from "@/src/hooks/user/useUserListingActions";
 import UserListingActionModal from "@/src/components/users/all-users/UserListingActionModal";
 import { useRouter } from "next/navigation";
+import { useUserAuthListen } from "@/src/hooks/user/useUserAuthListen";
 
 const CustomerListTable = () => {
   const router = useRouter();
+  const { user: currentUser } = useUserAuthListen();
 
   // --- State ---
-  const [pageIndex, setPageIndex] = useState(0); // 0-based index for logic
+  const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(15);
   const [searchQuery, setSearchQuery] = useState("");
   const [showModalIndex, setShowModalIndex] = useState<number | null>(null);
@@ -253,20 +255,21 @@ const CustomerListTable = () => {
               <ActionItem
                 icon={Shield}
                 label="Make Admin"
-                onClick={() =>
-                  handleChangeRole({ id: info.row.original.id, role: "admin" })
-                }
+                onClick={() => {
+                  handleChangeRole({ id: info.row.original.id, role: "admin" });
+                }}
               />
             )}
-            {info.row.original.role !== "user" && (
-              <ActionItem
-                icon={UserIcon}
-                label="Make User"
-                onClick={() =>
-                  handleChangeRole({ id: info.row.original.id, role: "user" })
-                }
-              />
-            )}
+            {info.row.original.role !== "user" &&
+              info.row.original.id !== currentUser?.id && (
+                <ActionItem
+                  icon={UserIcon}
+                  label="Make User"
+                  onClick={() =>
+                    handleChangeRole({ id: info.row.original.id, role: "user" })
+                  }
+                />
+              )}
             {!info.row.original.email_verified && (
               <ActionItem
                 icon={BadgeCheck}
@@ -274,30 +277,32 @@ const CustomerListTable = () => {
                 onClick={() => handleVerifyEmail({ id: info.row.original.id })}
               />
             )}
-            {info.row.original.account_status !== "suspend" && (
-              <ActionItem
-                icon={OctagonPause}
-                label="Suspend User"
-                onClick={() =>
-                  handleUpdateRole({
-                    id: info.row.original.id,
-                    status: "suspend",
-                  })
-                }
-              />
-            )}
-            {info.row.original.account_status !== "pending" && (
-              <ActionItem
-                icon={TriangleAlert}
-                label="Pending User"
-                onClick={() =>
-                  handleUpdateRole({
-                    id: info.row.original.id,
-                    status: "pending",
-                  })
-                }
-              />
-            )}
+            {info.row.original.account_status !== "suspend" &&
+              info.row.original.id !== currentUser?.id && (
+                <ActionItem
+                  icon={OctagonPause}
+                  label="Suspend User"
+                  onClick={() =>
+                    handleUpdateRole({
+                      id: info.row.original.id,
+                      status: "suspend",
+                    })
+                  }
+                />
+              )}
+            {info.row.original.account_status !== "pending" &&
+              info.row.original.id !== currentUser?.id && (
+                <ActionItem
+                  icon={TriangleAlert}
+                  label="Pending User"
+                  onClick={() =>
+                    handleUpdateRole({
+                      id: info.row.original.id,
+                      status: "pending",
+                    })
+                  }
+                />
+              )}
             {info.row.original.account_status !== "active" && (
               <ActionItem
                 icon={Check}
@@ -310,18 +315,19 @@ const CustomerListTable = () => {
                 }
               />
             )}
-
-            <ActionItem
-              icon={Trash}
-              danger
-              label="Delete User"
-              onClick={() => {
-                setActiveModal({
-                  type: "DELETE",
-                  data: info.row.original,
-                });
-              }}
-            />
+            {info.row.original.id !== currentUser?.id && (
+              <ActionItem
+                icon={Trash}
+                danger
+                label="Delete User"
+                onClick={() => {
+                  setActiveModal({
+                    type: "DELETE",
+                    data: info.row.original,
+                  });
+                }}
+              />
+            )}
             <div className="h-px bg-slate-100 my-1 hidden sm:block" />
             <ActionItem
               icon={Eye}

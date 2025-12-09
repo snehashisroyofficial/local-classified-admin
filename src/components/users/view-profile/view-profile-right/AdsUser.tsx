@@ -17,7 +17,6 @@ const AdsUser = ({ statusType }: { statusType: statusType }) => {
     isError,
     error: AdError,
   } = useUserAds({ type: statusType });
-  console.log("data", data);
   const ads = data?.pages.flatMap((page) => page.data) ?? [];
 
   if (isError) {

@@ -4,7 +4,7 @@ import { createClient } from "./utils/supabase/server";
 export async function proxy(request: NextRequest) {
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
-  console.log("Proxy is running 🔐");
+
   const pathname = request.nextUrl.pathname;
   const isLoggedIn = data?.claims;
 
@@ -21,5 +21,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|static|favicon.ico|api).*)"],
+  matcher: ["/((?!_next|api|favicon.ico|images|fonts|icons).*)"],
 };

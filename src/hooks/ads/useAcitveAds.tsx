@@ -53,7 +53,6 @@ export async function fetchActiveAds({
 }
 
 const useActiveAds = ({ limit, page, endDate, startDate }: Props) => {
-  console.log({ startDate }, { endDate });
   return useQuery({
     queryKey: ["active-ads", limit, page, endDate, startDate],
     queryFn: async () =>

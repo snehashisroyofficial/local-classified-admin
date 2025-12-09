@@ -24,7 +24,7 @@ export function SubmitButton({
         "transition-all duration-200", // Smooth hover animations
 
         // 2. Light Mode Colors
-        "bg-gray-600 hover:bg-gray-500",
+        "bg-primary hover:bg-primary/80",
 
         // 3. Dark Mode Colors (Using your theme variables)
         "dark:bg-dark-tertiary dark:hover:bg-dark-quinary",
