@@ -13,7 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import Image from "next/image";
-import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
+import AdCardSkeleton from "@/src/components/global/skeleton-ui/AdCardSkeleton";
 import { DateRangePicker, RangeValue } from "@heroui/react";
 import { getLocalTimeZone, DateValue } from "@internationalized/date";
 

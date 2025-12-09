@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, OctagonX, ReceiptText, TriangleAlert } from "lucide-react";
-import AdsUser from "./Ads/AdsUser";
+import AdsUser from "./AdsUser";
 
 const tabs = [
   { id: "active", label: "Active", icon: <Check size={16} /> },
@@ -39,7 +39,7 @@ export default function ProfileTabs() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`${
                   activeTab === tab.id ? "" : "hover:text-gray-600"
-                } relative rounded-full px-4 py-2 text-sm font-medium text-gray-500 outline-sky-400 transition focus-visible:outline-2 flex-shrink-0 whitespace-nowrap`}
+                } relative rounded-full px-4 py-2 text-sm font-medium text-gray-500 outline-sky-400 transition focus-visible:outline-2 shrink-0 whitespace-nowrap`}
                 style={{
                   WebkitTapHighlightColor: "transparent",
                 }}
@@ -69,21 +69,23 @@ export default function ProfileTabs() {
 
       {/* 4. Tab Content Area */}
       {/* Removed 'text-white' (likely a typo as bg is white). Added responsive padding. */}
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-6 ">
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          {activeTab === "active" && <AdsUser statusType="active" />}
-          {activeTab === "pending" && <AdsUser statusType="pending" />}
-          {activeTab === "rejected" && <AdsUser statusType="rejected" />}
-          {activeTab === "transactions" && (
-            <div className="h-24 flex justify-center items-center text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-              Coming Soon!
-            </div>
-          )}
+          <div className="max-h-[78vh] overflow-y-auto ">
+            {activeTab === "active" && <AdsUser statusType="active" />}
+            {activeTab === "pending" && <AdsUser statusType="pending" />}
+            {activeTab === "rejected" && <AdsUser statusType="rejected" />}
+            {activeTab === "transactions" && (
+              <div className="h-24 flex justify-center items-center text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                Coming Soon!
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
     </div>

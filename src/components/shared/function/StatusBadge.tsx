@@ -54,7 +54,7 @@ const StatusBadge = ({ status }: { status?: string | null }) => {
 
   return (
     <span
-      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${styles[normalized]}`}
+      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium w-fit ${styles[normalized]}`}
     >
       <Icon size={12} className="mr-1.5" />
       {normalized.charAt(0).toUpperCase() + normalized.slice(1)}

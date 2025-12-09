@@ -36,9 +36,12 @@ import moment from "moment";
 import ActionPopup from "@/src/components/ads/active-ads/ActionPopup";
 import ActionItem from "@/src/components/ads/active-ads/ActionItem";
 import { useClickOutside } from "@/src/hooks/useClickOutside";
-import { roleConfig, statusConfig } from "@/src/components/users/tableUtils";
+import {
+  roleConfig,
+  statusConfig,
+} from "@/src/components/users/all-users/tableUtils";
 import { useUserListingActions } from "@/src/hooks/user/useUserListingActions";
-import UserListingActionModal from "@/src/components/users/UserListingActionModal";
+import UserListingActionModal from "@/src/components/users/all-users/UserListingActionModal";
 import { useRouter } from "next/navigation";
 
 const CustomerListTable = () => {
@@ -375,7 +378,7 @@ const CustomerListTable = () => {
 
   return (
     <>
-      <div className="relative hidden md:block mb-2">
+      <div className="relative  mb-2">
         <Search
           className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
           size={18}
@@ -390,7 +393,7 @@ const CustomerListTable = () => {
       </div>
 
       <div className="w-full relative bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="min-h-[75vh] w-full divide-y-2 overflow-auto scrollbar-show bg-input/50 ">
+        <div className="min-h-[83vh] w-full divide-y-2 overflow-auto scrollbar-show bg-input/50 ">
           {isLoading ? (
             <div className="text-sm font-light flex justify-center items-center gap-2 min-h-[75vh] h-full">
               <span>loading</span>

@@ -1,5 +1,5 @@
 import { Clock, Users } from "lucide-react";
-import { getExpiryStatus } from "../../global/getExpiryStatus";
+import { getExpiryStatus } from "../../shared/function/getExpiryStatus";
 import { AdvertisementType } from "@/src/types/ads/ads";
 
 type Props = {
@@ -7,7 +7,6 @@ type Props = {
   showUserInfo?: boolean;
 };
 const ContentInfoCard = ({ ad, showUserInfo }: Props) => {
-  console.log("content info card", ad);
   return (
     <div>
       <div className="flex items-start justify-between mb-2">

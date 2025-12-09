@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import useActiveAds from "@/src/hooks/ads/useAllAds";
-import AdCardSkeleton from "@/src/components/global/AdCardSkeleton";
+import AdCardSkeleton from "@/src/components/global/skeleton-ui/AdCardSkeleton";
 
 import { useActiveListingActions } from "@/src/hooks/ads/useActiveListingActions";
 import moment from "moment";

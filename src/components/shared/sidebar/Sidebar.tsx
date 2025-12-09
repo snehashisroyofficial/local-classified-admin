@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ShoppingBag } from "lucide-react";
+import { LogOut, ShoppingBag } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 import SubMenuItem from "./SubMenuItem";
 import { SIDEBAR_ITEMS } from "./item";
 import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/src/utils/supabase/client";
+import { useUserAuthListen } from "@/src/hooks/user/useUserAuthListen";
 
 type Props = {
   sidebarOpen: boolean;
@@ -13,9 +15,10 @@ type Props = {
 };
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
+  const { user, isLoading } = useUserAuthListen();
+
   const router = useRouter();
   const pathname = usePathname();
-
   const [activeView, setActiveView] = useState("overview");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -35,6 +38,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
       }
     });
   }, [pathname]);
+  const handleLogout = async () => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      router.push("/signin");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-800">
@@ -102,21 +115,48 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
           })}
         </nav>
 
-        <div className="p-6 border-t border-slate-100 flex shrink-0 mt-auto">
-          <div className="flex items-center space-x-3">
-            <Image
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
-              alt="Admin"
-              width={100}
-              height={100}
-              className="h-10 w-10 rounded-full object-cover"
-            />
-            <div>
-              <p className="text-sm font-medium text-slate-700">Admin User</p>
-              <p className="text-xs text-slate-400">Super Admin</p>
+        {isLoading && (
+          <div className="p-6 border-t border-slate-100 flex shrink-0 mt-auto">
+            <div className="flex items-center space-x-3">
+              {/* Avatar Skeleton */}
+              <div className="h-10 w-10 rounded-full bg-slate-200 animate-pulse" />
+
+              <div className="flex flex-col space-y-1">
+                {/* Name Skeleton */}
+                <div className="h-3 w-24 bg-slate-200 rounded animate-pulse" />
+
+                {/* Role Skeleton */}
+                <div className="h-2 w-16 bg-slate-200 rounded animate-pulse" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {!isLoading && user && (
+          <div className="p-6 border-t border-slate-100 flex shrink-0 mt-auto">
+            <div className="flex items-center space-x-3 justify-around">
+              <Image
+                src={user?.user_avatar || "/public/globe.svg"}
+                alt="Admin"
+                width={100}
+                height={100}
+                className="h-10 w-10 rounded-full object-cover"
+              />
+              <div>
+                <p className="text-sm font-medium text-slate-700">
+                  {user?.full_name}
+                </p>
+                <p className="text-xs text-slate-400">{user?.role}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 rounded-full hover:bg-red-500  hover:text-white"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
+          </div>
+        )}
       </aside>
     </div>
   );

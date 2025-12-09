@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency } from "@/src/components/ads/view/CurrencyFormat";
+import { formatCurrency } from "@/src/components/shared/function/CurrencyFormat";
 import ImageGallery from "@/src/components/ads/view/ImageGallery";
 
 const MapView = dynamic(() => import("@/src/components/ads/view/MapView"), {
@@ -8,7 +8,7 @@ const MapView = dynamic(() => import("@/src/components/ads/view/MapView"), {
   loading: () => <p>Loading Map...</p>,
 });
 
-import StatusBadge from "@/src/components/ads/view/StatusBadge";
+import StatusBadge from "@/src/components/shared/function/StatusBadge";
 import ViewAdDetailsSkeleton from "@/src/components/ads/view/ViewAdDetailsSkeleton";
 import ListingActionModal from "@/src/components/ads/pending/PendingListingActionModal";
 import useFetchSingleAd from "@/src/hooks/ads/useFetchSingleAd";
@@ -77,9 +77,9 @@ const ViewAdDetails = ({ id }: { id: string }) => {
   };
   console.log({ singleAd });
   return (
-    <div className="w-full min-h-screen bg-gray-50/50 pb-10">
+    <div className="w-full h-full bg-gray-50/50 pb-10 ">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div className=" px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <button
@@ -102,9 +102,9 @@ const ViewAdDetails = ({ id }: { id: string }) => {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+      <main className="px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8 items-start">
         {/* LEFT CONTENT COLUMN (8/12) */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-9 space-y-6">
           {/* Main Card */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden pb-6">
             {/* Image Gallery Wrapper */}
@@ -226,7 +226,7 @@ const ViewAdDetails = ({ id }: { id: string }) => {
           </div>
         </div>
         {/* right  */}
-        <div className="lg:col-span-4 space-y-6 mt-6 lg:mt-0 lg:sticky lg:top-8">
+        <div className="lg:col-span-3 space-y-6 mt-6 lg:mt-0 lg:sticky lg:top-8">
           {singleAd?.status === "pending" && (
             <div className="fixed bottom-0 left-0 right-0 z-99999 bg-white border-t border-gray-200 shadow-sm p-4 lg:static lg:bg-white lg:border lg:rounded-2xl lg:shadow-sm mb-0 lg:p-5 lg:mb-6 lg:z-auto  ">
               <div className="hidden lg:flex items-center gap-2 mb-4 text-gray-900 font-semibold">
