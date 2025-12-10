@@ -6,11 +6,13 @@ import Input from "@/src/components/global/ui/auth/Input";
 import { signInUser } from "@/src/lib/actions/auth";
 import { getUserInfo } from "@/src/lib/actions/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { LockKeyhole, Mail, ShoppingBag } from "lucide-react";
+import { LockKeyhole, Mail } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react"; // 1. Import Suspense
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import logo from "../../../assets/logo/logo1.png";
 type FormValues = {
   email: string;
   password: string;
@@ -62,18 +64,14 @@ const SignInContent = () => {
     >
       <div className="max-w-md w-full p-8 m-4 bg-white  rounded-2xl shadow auth-form-container backdrop-blur-sm!">
         <div className="flex flex-col items-center max-w-md w-full my-6 ">
-          {/* <Image
-            src={"/images/logo1.png"}
+          <Image
+            src={logo}
             height={60}
             width={230}
             alt="logo"
             className="h-full object-contain mx-auto mb-8"
-          /> */}
-          <div className="h-16 flex items-center  border-b border-slate-100 shrink-0">
-            <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center mr-3">
-              <ShoppingBag className="text-white" size={20} />
-            </div>
-          </div>
+          />
+
           <h2 className="font-bold text-2xl">Welcome Back!</h2>
           <span className="text-gray-500 text-sm text-center">
             Manage users, ads, plans, subscriptions, and more — all from one

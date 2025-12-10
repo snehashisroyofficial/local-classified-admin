@@ -1,7 +1,7 @@
 "use client";
 
 import useUserInfo from "@/src/hooks/user/useUserInfo";
-import { BadgeCheck, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import { statusConfig } from "../../all-users/tableUtils";
