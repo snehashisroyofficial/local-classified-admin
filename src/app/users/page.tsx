@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import manifest from "@/src/app/manifest";
+import manifest from "@/src/app/infoApp";
 import CustomerListTable from "./UserPage";
 
 export const metadata: Metadata = {

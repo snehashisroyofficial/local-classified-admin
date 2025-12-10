@@ -1,6 +1,6 @@
 import ActiveAds from "./ActiveAds";
 import { Metadata } from "next";
-import manifest from "@/src/app/manifest";
+import manifest from "@/src/app/infoApp";
 
 export const metadata: Metadata = {
   title: "Active Ads",
