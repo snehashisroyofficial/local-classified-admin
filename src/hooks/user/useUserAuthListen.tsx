@@ -1,8 +1,8 @@
 "use client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { getUserInfo } from "@/src/lib/actions/user";
 import { createClient } from "@/src/utils/supabase/client";
+import { getUserInfo } from "@/src/lib/actions/user";
 
 export function useUserAuthListen() {
   const queryClient = useQueryClient();

@@ -6,6 +6,7 @@ import moment from "moment";
 import Image from "next/image";
 import { statusConfig } from "../../all-users/tableUtils";
 import ProfileSidebarSkeleton from "./ProfileSidebarSkeleton";
+import VerificationStatusBadge from "@/src/components/shared/function/VerificationStatusBadge";
 
 const ProfileSidebar = () => {
   const { data: UserInfo, isLoading } = useUserInfo();
@@ -27,8 +28,6 @@ const ProfileSidebar = () => {
     <div className="col-span-12 lg:col-span-4 space-y-6 lg:sticky lg:top-0 h-fit">
       {/* Seller Profile Card */}
       <div className="relative bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-200">
-        {/* 2. HEADER SECTION */}
-        {/* Added 'pr-20' to prevent the name from overlapping the absolute badge on small screens */}
         <div className="flex items-center gap-3 sm:gap-4 mb-5 pr-20">
           <div className="relative shrink-0">
             <Image
@@ -44,10 +43,9 @@ const ProfileSidebar = () => {
             <h3 className="font-bold text-gray-900 truncate text-base sm:text-lg">
               {UserInfo?.full_name || "Loading..."}
             </h3>
-            <div className="flex items-center gap-1 text-[10px] sm:text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full w-fit mt-1">
-              <BadgeCheck className="w-3 h-3" />
-              <span className="truncate">Verified Seller</span>
-            </div>
+            <VerificationStatusBadge
+              isVerified={UserInfo?.email_verified ?? false}
+            />
           </div>
         </div>
 
