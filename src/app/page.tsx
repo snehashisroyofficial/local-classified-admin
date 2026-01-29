@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
+
 const page = () => {
-  return <div>home</div>;
+  redirect("/ads/active");
 };
 
 export default page;
