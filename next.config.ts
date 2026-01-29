@@ -1,28 +1,15 @@
-// next.config.mjs
-import withPWAInit from "@ducanh2912/next-pwa";
+import type { NextConfig } from "next";
 
-const withPWA = withPWAInit({
-  dest: "public",
-  // disable: process.env.NODE_ENV === "development",
-  disable: false,
-  register: true,
-  cacheOnFrontEndNav: true,
-  workboxOptions: {
-    disableDevLogs: true,
-  },
-});
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
+  devIndicators: false,
   images: {
     remotePatterns: [
       {
-        // protocol: "https",  <-- REMOVE THIS LINE
+        protocol: "https",
         hostname: "**",
-        // pathname is optional, you can keep it or remove it depending on needs
       },
     ],
   },
 };
 
-export default withPWA(nextConfig);
+export default nextConfig;

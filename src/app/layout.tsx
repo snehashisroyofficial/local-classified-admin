@@ -6,6 +6,9 @@ import AppProviders from "./providers";
 import LayoutProvider from "../layout/Layout";
 import "leaflet/dist/leaflet.css";
 import manifest from "./infoApp";
+import RegisterSW from "../components/RegisterSW";
+import PWAUpdateToast from "../components/PWAUpdateToast";
+import InstallPrompt from "../components/InstallPrompt";
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
@@ -38,7 +41,12 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} antialiased`}>
       <body>
         <AppProviders>
-          <LayoutProvider>{children}</LayoutProvider>
+          <LayoutProvider>
+            <RegisterSW />
+            <PWAUpdateToast />
+            <InstallPrompt />
+            {children}
+          </LayoutProvider>
         </AppProviders>
       </body>
     </html>
