@@ -11,7 +11,7 @@ const SubMenuItem = ({ label, active, onClick, count }: SubMenuItemProps) => {
       onClick={onClick}
       className={`w-full flex items-center justify-between pl-14 pr-6 py-2 text-sm transition-colors duration-200 ${
         active
-          ? "text-indigo-600 font-medium bg-indigo-50/50"
+          ? "text-primary font-medium bg-indigo-50/50"
           : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
       }`}
     >

@@ -22,7 +22,7 @@ const SidebarItem = ({
       onClick={onClick}
       className={`w-full flex items-center justify-between px-6 py-3 transition-colors duration-200 ${
         active
-          ? "bg-indigo-50 text-indigo-600 border-r-4 border-indigo-600"
+          ? "bg-indigo-50 text-primary border-r-4 border-primary"
           : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
       }`}
     >

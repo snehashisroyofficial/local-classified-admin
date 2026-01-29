@@ -1,5 +1,4 @@
-import { Bell, Menu, Search } from "lucide-react";
-import React from "react";
+import { Menu, ShoppingBag } from "lucide-react";
 
 type Props = {
   setSidebarOpen: (open: boolean) => void;
@@ -7,31 +6,22 @@ type Props = {
 const Header = ({ setSidebarOpen }: Props) => {
   return (
     <div>
-      <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 shrink-0">
+      <header className=" lg:hidden  h-16 bg-white border-b border-slate-200 flex  items-center justify-between px-4 lg:px-10 shrink-0">
+        {/* logo  */}
+        <div className="h-16 flex items-center  border-b border-slate-100 shrink-0">
+          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center mr-3">
+            <ShoppingBag className="text-white" size={20} />
+          </div>
+          <span className="text-xl font-bold text-slate-800">MarketAdmin</span>
+        </div>
+
+        {/* menu hamburger  */}
         <div className="flex items-center">
           <button
-            className="lg:hidden mr-4 p-2 text-slate-500 hover:bg-slate-100 rounded-md"
+            className="lg:hidden  p-2 text-slate-500 hover:bg-slate-100 rounded-md"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu size={24} />
-          </button>
-          <div className="relative hidden md:block">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              size={18}
-            />
-            <input
-              type="text"
-              placeholder="Search ads, users..."
-              className="pl-10 pr-4 py-2 w-64 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <button className="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
-            <Bell size={20} />
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
           </button>
         </div>
       </header>

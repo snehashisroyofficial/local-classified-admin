@@ -3,27 +3,50 @@
 /* Note: You may need to change the path to fit your project structure */
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
-:root {
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
-}
+} */
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-primary: #0064e0;
+  /* This automatically creates the class 'bg-login-pattern' */
+  --background-image-login-pattern: url("/images/banner1.webp");
+
+  /* You can even chain multiple images/gradients */
+  --background-image-hero-fade: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      black
+    ),
+    url("/images/banner1.webp");
 }
 
-@media (prefers-color-scheme: dark) {
+@layer components {
+}
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  /* font-family: var(--font-sans) !important; */
+}
+
+button {
+  @apply active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer;
+}
+
+.leaflet-container {
+  z-index: 0 !important; /* Forces the map to the bottom of the stack */
+  position: relative;
 }

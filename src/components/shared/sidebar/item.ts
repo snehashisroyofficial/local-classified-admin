@@ -24,9 +24,8 @@ export const SIDEBAR_ITEMS: SidebarMenuItem[] = [
     label: "Ad Listings",
     icon: ShoppingBag,
     submenu: [
-      { label: "Active Ads", route: "/active" },
-      { label: "Pending Ads", route: "/pending" },
-      { label: "Rejected Ads", route: "/rejected" },
+      { label: "Active Ads", route: "/ads/active" },
+      { label: "Pending Ads", route: "/ads/pending" },
     ],
   },
   {
