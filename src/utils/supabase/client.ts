@@ -8,6 +8,6 @@ export function createClient() {
       auth: {
         storageKey: "a-token",
       },
-    }
+    },
   );
 }

@@ -42,7 +42,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
   const handleLogout = async () => {
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut({ scope: "local" });
       if (error) throw error;
       router.push("/signin");
     } catch (error) {
@@ -78,7 +78,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
         <nav className="space-y-1 overflow-y-auto">
           {SIDEBAR_ITEMS.map((item) => {
             const isActive = item.submenu?.some((sub) =>
-              pathname.includes(sub.route)
+              pathname.includes(sub.route),
             );
 
             return (
@@ -87,7 +87,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: Props) => {
                   icon={item.icon}
                   label={item.label}
                   active={
-                    item.submenu ? isActive ?? false : item.route === activeView
+                    item.submenu
+                      ? (isActive ?? false)
+                      : item.route === activeView
                   }
                   hasSubmenu={!!item.submenu}
                   isOpen={item.submenu && openMenu === item.label}

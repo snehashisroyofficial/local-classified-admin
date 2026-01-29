@@ -1,7 +1,7 @@
 import NotFoundPage from "@/src/app/not-found";
 import ViewAdDetails from "./ViewAdDetails";
 import { Metadata } from "next";
-import manifest from "@/src/app/manifest";
+import manifest from "@/src/app/infoApp";
 export const metadata: Metadata = {
   title: "View Ads",
   description: `View and manage your ads for ${manifest().name}.`,
